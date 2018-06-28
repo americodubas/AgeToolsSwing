@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="DatabaseForm">
+  <grid id="27dc6" binding="databasePanel" layout-manager="GridLayoutManager" row-count="5" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="10" left="10" bottom="10" right="10"/>
+    <constraints>
+      <xy x="20" y="20" width="530" height="400"/>
+    </constraints>
+    <properties>
+      <background color="-3158065"/>
+      <foreground color="-12500671"/>
+      <inheritsPopupMenu value="false"/>
+    </properties>
+    <border type="bevel-lowered" title-resource-bundle="words" title-key="database">
+      <font name="Verdana" size="16" style="1"/>
+      <title-color color="-16777216"/>
+    </border>
+    <children>
+      <component id="c2ded" class="javax.swing.JButton" binding="addButton">
+        <constraints>
+          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-1315861"/>
+          <text resource-bundle="words" key="add"/>
+        </properties>
+      </component>
+      <component id="913db" class="javax.swing.JButton" binding="saveButton" default-binding="true">
+        <constraints>
+          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-1315861"/>
+          <text resource-bundle="words" key="save"/>
+        </properties>
+      </component>
+      <component id="1f5ae" class="javax.swing.JButton" binding="deleteButton" default-binding="true">
+        <constraints>
+          <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-1315861"/>
+          <text resource-bundle="words" key="delete"/>
+        </properties>
+      </component>
+      <component id="d83f7" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text resource-bundle="words" key="name"/>
+        </properties>
+      </component>
+      <component id="2c5b9" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text resource-bundle="words" key="user"/>
+        </properties>
+      </component>
+      <component id="58b12" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text resource-bundle="words" key="url"/>
+        </properties>
+      </component>
+      <component id="14292" class="javax.swing.JTextField" binding="nameField">
+        <constraints>
+          <grid row="1" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="cb8e0" class="javax.swing.JTextField" binding="userField">
+        <constraints>
+          <grid row="2" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="519fd" class="javax.swing.JTextField" binding="urlField">
+        <constraints>
+          <grid row="3" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="f13e8" class="javax.swing.JButton" binding="changeToThisDatabaseButton" default-binding="true">
+        <constraints>
+          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-1315861"/>
+          <text resource-bundle="words" key="change.database"/>
+        </properties>
+      </component>
+      <scrollpane id="c77de">
+        <constraints>
+          <grid row="0" column="0" row-span="5" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="80" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="91968" class="javax.swing.JList" binding="databaseList">
+            <constraints/>
+            <properties>
+              <background color="-12500671"/>
+              <foreground color="-1"/>
+              <selectionBackground color="-9539213"/>
+              <selectionForeground color="-1"/>
+              <valueIsAdjusting value="false"/>
+            </properties>
+          </component>
+        </children>
+      </scrollpane>
+    </children>
+  </grid>
+</form>
