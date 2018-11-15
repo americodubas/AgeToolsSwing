@@ -11,22 +11,18 @@ import java.io.PrintWriter
 val builder: Gson = GsonBuilder().setPrettyPrinting().create()
 const val path = "C:\\jdsv\\"
 
-fun writeJsonFile(d: Database, fileName: String) {
-    PrintWriter(path + fileName).append(builder.toJson(d)).close()
+fun <T> writeJsonFile(t: T, fileName: String) {
+    PrintWriter(path + fileName).append(builder.toJson(t)).close()
 }
 
-fun writeJsonFile(l: List<Database>, fileName: String) {
-    PrintWriter(path + fileName).append(builder.toJson(l)).close()
-}
-
-fun readJsonFileToList(fileName: String): List<Database> {
+inline fun <reified T> jsonFileToObject(fileName: String): T {
     val bufferedReader: BufferedReader = File(path + fileName).bufferedReader()
     val json = bufferedReader.use { it.readText() }
-    return builder.fromJson(json, object : TypeToken<List<Database>>() {}.type)
+    return builder.fromJson(json, T::class.java)
 }
 
-fun readJsonFileToObject(fileName: String): Database {
+inline fun <reified T> jsonFileToList(fileName: String): List<T> {
     val bufferedReader: BufferedReader = File(path + fileName).bufferedReader()
     val json = bufferedReader.use { it.readText() }
-    return builder.fromJson(json, Database::class.java)
+    return builder.fromJson(json, object : TypeToken<List<T>>() {}.type)
 }

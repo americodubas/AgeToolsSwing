@@ -73,7 +73,7 @@ fun getAllDatabases(): List<Database> {
     if ( !File(path + fileName).exists() ) {
         createNewFile()
     }
-    return readJsonFileToList(fileName)
+    return jsonFileToList(fileName)
 }
 
 private fun createNewFile() {

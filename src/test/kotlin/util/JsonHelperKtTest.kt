@@ -1,10 +1,14 @@
-package util
+package kotlin.util
 
 import model.Database
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import util.jsonFileToList
+import util.jsonFileToObject
+import util.path
+import util.writeJsonFile
 import java.io.File
 
 class JsonHelperKtTest {
@@ -19,27 +23,27 @@ class JsonHelperKtTest {
     }
 
     @Test
-    fun writeJsonFile() {
+    fun jsonFileShouldExist() {
         val fileName = "test1.json"
         writeJsonFile(database1, fileName)
         assertTrue( File(path + fileName).exists() )
     }
 
     @Test
-    fun readJsonFileToObject() {
+    fun jsonFileShouldReturnSameObject() {
         val fileName = "test2.json"
         writeJsonFile(database1, fileName)
-        val databaseFromJson = readJsonFileToObject(fileName)
+        val databaseFromJson = jsonFileToObject<Database>(fileName)
         assertEquals(database1, databaseFromJson)
     }
 
 
     @Test
-    fun readJsonFileToList() {
+    fun jsonFileShouldReturnSameToList() {
         val fileName = "test3.json"
         val databases = listOf(database1, database2)
         writeJsonFile(databases, fileName)
-        val databasesFromJson = readJsonFileToList(fileName)
+        val databasesFromJson = jsonFileToList<Database>(fileName)
         assertEquals(databases, databasesFromJson)
     }
 }
