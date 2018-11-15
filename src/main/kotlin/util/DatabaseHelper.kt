@@ -1,5 +1,6 @@
 package util
 
+import com.google.gson.reflect.TypeToken
 import model.ConnectionFile
 import model.Database
 import org.w3c.dom.Document
@@ -73,7 +74,8 @@ fun getAllDatabases(): List<Database> {
     if ( !File(path + fileName).exists() ) {
         createNewFile()
     }
-    return jsonFileToList(fileName)
+    val databaseTypeToken = object : TypeToken<List<Database>>() {}
+    return jsonFileToList(fileName, databaseTypeToken)
 }
 
 private fun createNewFile() {

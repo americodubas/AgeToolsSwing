@@ -1,5 +1,6 @@
-package kotlin.util
+package util
 
+import com.google.gson.reflect.TypeToken
 import model.Database
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -43,7 +44,8 @@ class JsonHelperKtTest {
         val fileName = "test3.json"
         val databases = listOf(database1, database2)
         writeJsonFile(databases, fileName)
-        val databasesFromJson = jsonFileToList<Database>(fileName)
+        val databaseTypeToken = object : TypeToken<List<Database>>() {}
+        val databasesFromJson = jsonFileToList<Database>(fileName, databaseTypeToken)
         assertEquals(databases, databasesFromJson)
     }
 }

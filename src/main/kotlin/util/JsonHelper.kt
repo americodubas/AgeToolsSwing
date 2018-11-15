@@ -21,8 +21,8 @@ inline fun <reified T> jsonFileToObject(fileName: String): T {
     return builder.fromJson(json, T::class.java)
 }
 
-inline fun <reified T> jsonFileToList(fileName: String): List<T> {
+inline fun <reified T> jsonFileToList(fileName: String, typeToken: TypeToken<List<T>>): List<T> {
     val bufferedReader: BufferedReader = File(path + fileName).bufferedReader()
     val json = bufferedReader.use { it.readText() }
-    return builder.fromJson(json, object : TypeToken<List<T>>() {}.type)
+    return builder.fromJson(json, typeToken.type)
 }
