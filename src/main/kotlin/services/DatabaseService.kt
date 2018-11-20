@@ -11,11 +11,11 @@ import javax.xml.transform.TransformerFactory
 import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 
-const val fileName = "database.json"
+const val databaseJsonFileName = "database.json"
 
 private val files = arrayOf(
-        ConnectionFile("c:\\jdsv\\ds\\projetos-ds.xml", "user-name", "connection-url"),
-        ConnectionFile("c:\\jdsv\\agesocproc\\ini.xml", "username", "url")
+        ConnectionFile(1, "ds", "c:\\jdsv\\ds\\projetos-ds.xml", "user-name", "connection-url"),
+        ConnectionFile(2, "ini", "c:\\jdsv\\agesocproc\\ini.xml", "username", "url")
 )
 
 fun changeConnectionTo(id: Int) {
@@ -48,20 +48,20 @@ private fun getDocument(filepath: String) =
 fun createDatabase(): Database {
     val allDatabases = getAllDatabases()
     val newDatabase = Database(generateId(allDatabases), generateName(allDatabases))
-    writeJsonFile(allDatabases.plus(newDatabase), fileName)
+    writeJsonFile(allDatabases.plus(newDatabase), databaseJsonFileName)
     return newDatabase
 }
 
 fun getAllDatabases(): List<Database> {
-    if ( !File(path + fileName).exists() ) {
+    if ( !File(path + databaseJsonFileName).exists() ) {
         createNewFile()
     }
     val databaseTypeToken = object : TypeToken<List<Database>>() {}
-    return jsonFileToList(fileName, databaseTypeToken)
+    return jsonFileToList(databaseJsonFileName, databaseTypeToken)
 }
 
 private fun createNewFile() {
-    writeJsonFile(listOf(Database()), fileName)
+    writeJsonFile(listOf(Database()), databaseJsonFileName)
 }
 
 fun getDatabaseBy(name: String) = getAllDatabases().find { it.name == name }
@@ -85,13 +85,13 @@ fun updateDatabase(new: Database) {
         old.user = new.user
         old.url = new.url
     }
-    writeJsonFile(allDatabases, fileName)
+    writeJsonFile(allDatabases, databaseJsonFileName)
 }
 
 fun deleteDatabaseBy(id: Int) {
     val m = getAllDatabases().toMutableList()
     m.removeAt(m.indexOfFirst { it.id == id })
-    writeJsonFile(m, fileName)
+    writeJsonFile(m, databaseJsonFileName)
 }
 
-fun isNameAlreadyUsed(name: String, id: Int) = getAllDatabases().find { it.name == name && it.id != id } != null
+fun isDatabaseNameAlreadyUsed(name: String, id: Int) = getAllDatabases().find { it.name == name && it.id != id } != null

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static services.DatabaseServiceKt.changeConnectionTo;
-import static services.DatabaseServiceKt.isNameAlreadyUsed;
+import static services.DatabaseServiceKt.isDatabaseNameAlreadyUsed;
 
 @SuppressWarnings("unchecked")
 class DatabaseForm {
@@ -78,7 +78,7 @@ class DatabaseForm {
                 if (isMissingRequiredFields()){
                     return;
                 }
-                if (isNameAlreadyUsed(nameField.getText(), id)) {
+                if (isDatabaseNameAlreadyUsed(nameField.getText(), id)) {
                     Toast.makeText(frame,words.getString("name.used"));
                     return;
                 }
