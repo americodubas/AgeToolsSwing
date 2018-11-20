@@ -15,9 +15,9 @@ import static services.DatabaseServiceKt.isDatabaseNameAlreadyUsed;
 
 @SuppressWarnings("unchecked")
 class DatabaseForm {
-    private static JFrame frame;
+    private JFrame frame;
 
-    private JPanel databasePanel;
+    JPanel databasePanel;
     private JList databaseList;
     private JButton addButton;
     private JButton saveButton;
@@ -31,7 +31,8 @@ class DatabaseForm {
     private int id;
     private ResourceBundle words = ResourceBundle.getBundle("words");
 
-    private DatabaseForm() {
+    DatabaseForm(JFrame frame) {
+        this.frame = frame;
         setDatabaseList();
         checkDisableDeleteButton();
         setAddButtonListener();
@@ -166,14 +167,6 @@ class DatabaseForm {
             missing = true;
         }
         return missing;
-    }
-
-    public static void main(String[] args) {
-        frame = new JFrame("AGE TOOLS");
-        frame.setContentPane(new DatabaseForm().databasePanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
     }
 
 }
