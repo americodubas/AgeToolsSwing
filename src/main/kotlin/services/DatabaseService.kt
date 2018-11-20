@@ -81,9 +81,11 @@ fun updateDatabase(new: Database) {
     val allDatabases = getAllDatabases()
     val old = allDatabases.find { it.id == new.id }
     if (old != null){
-        old.name = new.name
-        old.user = new.user
-        old.url = new.url
+        with(old) {
+            name = new.name
+            user = new.user
+            url = new.url
+        }
     }
     writeJsonFile(allDatabases, databaseJsonFileName)
 }

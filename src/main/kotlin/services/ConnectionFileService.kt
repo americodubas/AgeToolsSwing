@@ -43,10 +43,12 @@ fun updateConnectionFile(new: ConnectionFile) {
     val allConnectionFiles = getAllConnectionFiles()
     val old = allConnectionFiles.find { it.id == new.id }
     if (old != null){
-        old.name = new.name
-        old.filepath = new.filepath
-        old.userTag = new.userTag
-        old.urlTag = new.urlTag
+        with(old){
+            name = new.name
+            filepath = new.filepath
+            userTag = new.userTag
+            urlTag = new.urlTag
+        }
     }
     writeJsonFile(allConnectionFiles, connectionFileJsonFileName)
 }
