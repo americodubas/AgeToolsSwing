@@ -1,5 +1,5 @@
 import model.Database;
-import util.DatabaseHelperKt;
+import services.DatabaseServiceKt;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -10,8 +10,8 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import static util.DatabaseHelperKt.changeConnectionTo;
-import static util.DatabaseHelperKt.isNameAlreadyUsed;
+import static services.DatabaseServiceKt.changeConnectionTo;
+import static services.DatabaseServiceKt.isNameAlreadyUsed;
 
 @SuppressWarnings("unchecked")
 class DatabaseForm {
@@ -56,7 +56,7 @@ class DatabaseForm {
         deleteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (canDelete()) {
-                    DatabaseHelperKt.deleteDatabaseBy(id);
+                    DatabaseServiceKt.deleteDatabaseBy(id);
                     databaseModel.remove(databaseList.getSelectedIndex());
                     checkDisableDeleteButton();
                     selectFirstDatabase();
@@ -82,12 +82,12 @@ class DatabaseForm {
                     Toast.makeText(frame,words.getString("name.used"));
                     return;
                 }
-                Database database = DatabaseHelperKt.getDatabaseBy(id);
+                Database database = DatabaseServiceKt.getDatabaseBy(id);
                 if (database != null) {
                     database.setName(nameField.getText());
                     database.setUser(userField.getText());
                     database.setUrl(urlField.getText());
-                    DatabaseHelperKt.updateDatabase(database);
+                    DatabaseServiceKt.updateDatabase(database);
                     databaseModel.set(databaseList.getSelectedIndex(), nameField.getText());
                 } else {
                     Toast.makeText(frame,words.getString("error.database"));
@@ -100,7 +100,7 @@ class DatabaseForm {
         addButton.setMnemonic(KeyEvent.VK_A);
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                databaseModel.addElement(DatabaseHelperKt.createDatabase().getName());
+                databaseModel.addElement(DatabaseServiceKt.createDatabase().getName());
                 checkDisableDeleteButton();
             }
         });
@@ -125,7 +125,7 @@ class DatabaseForm {
                 if (databaseList.getSelectedIndex() < 0) {
                     return;
                 }
-                Database database = DatabaseHelperKt.getDatabaseBy((String) databaseModel.get(databaseList.getSelectedIndex()));
+                Database database = DatabaseServiceKt.getDatabaseBy((String) databaseModel.get(databaseList.getSelectedIndex()));
                 if (database != null) {
                     nameField.setText(database.getName());
                     userField.setText(database.getUser());
@@ -144,7 +144,7 @@ class DatabaseForm {
 
     private void getDatabaseModelFromJson() {
         databaseModel = new DefaultListModel();
-        ArrayList<String> allDatabasesNames = DatabaseHelperKt.getAllDatabasesNames();
+        ArrayList<String> allDatabasesNames = DatabaseServiceKt.getAllDatabasesNames();
         for (String name: allDatabasesNames) {
             databaseModel.addElement(name);
         }

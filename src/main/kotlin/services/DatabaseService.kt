@@ -1,9 +1,10 @@
-package util
+package services
 
 import com.google.gson.reflect.TypeToken
 import model.ConnectionFile
 import model.Database
 import org.w3c.dom.Document
+import util.*
 import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.transform.TransformerFactory
@@ -11,7 +12,6 @@ import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 
 const val fileName = "database.json"
-const val newDatabaseName = "New"
 
 private val files = arrayOf(
         ConnectionFile("c:\\jdsv\\ds\\projetos-ds.xml", "user-name", "connection-url"),
@@ -47,27 +47,9 @@ private fun getDocument(filepath: String) =
 
 fun createDatabase(): Database {
     val allDatabases = getAllDatabases()
-    val newDatabase = Database(getNewDatabaseId(allDatabases), getNewDatabaseName(allDatabases))
+    val newDatabase = Database(generateId(allDatabases), generateName(allDatabases))
     writeJsonFile(allDatabases.plus(newDatabase), fileName)
     return newDatabase
-}
-
-private fun getNewDatabaseName(allDatabases: List<Database>): String {
-    var newName = newDatabaseName
-    var count = 1
-    while (allDatabases.find { it.name == newName } != null){
-        newName = newDatabaseName + count
-        count++
-    }
-    return newName
-}
-
-private fun getNewDatabaseId(allDatabases: List<Database>): Int {
-    val maxId = allDatabases.maxBy { it.id }
-    return when (maxId == null) {
-        true -> 1
-        false -> maxId!!.id + 1
-    }
 }
 
 fun getAllDatabases(): List<Database> {
