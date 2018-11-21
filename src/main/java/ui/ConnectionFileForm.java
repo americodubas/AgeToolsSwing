@@ -1,6 +1,5 @@
 package ui;
 
-import interfaces.Panel;
 import model.Database;
 import org.jetbrains.annotations.NotNull;
 import services.DatabaseServiceKt;
@@ -17,10 +16,10 @@ import java.util.ResourceBundle;
 import static services.DatabaseServiceKt.changeConnectionTo;
 import static services.DatabaseServiceKt.isDatabaseNameAlreadyUsed;
 
-public class ConnectionFileForm implements Panel {
+public class ConnectionFileForm {
     private JFrame frame;
 
-    private JPanel databasePanel;
+    public JPanel databasePanel;
     private JList databaseList;
     private JButton addButton;
     private JButton saveButton;
@@ -35,6 +34,7 @@ public class ConnectionFileForm implements Panel {
     private ResourceBundle words = ResourceBundle.getBundle("words");
 
     public ConnectionFileForm(JFrame frame) {
+        System.out.println("Connection form");
         this.frame = frame;
         setDatabaseList();
         checkDisableDeleteButton();
@@ -172,9 +172,4 @@ public class ConnectionFileForm implements Panel {
         return missing;
     }
 
-    @NotNull
-    @Override
-    public JPanel getPanel() {
-        return databasePanel;
-    }
 }

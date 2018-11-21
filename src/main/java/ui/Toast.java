@@ -62,7 +62,7 @@ class Toast extends JDialog {
             System.err.println("Shaped windows are not supported");
         }
 
-        //If translucent windows are supported, 
+        //If translucent windows are supported,
         //create an opaque window.
         // Set the window to 50% translucency, if supported.
         if (isTranslucencySupported) {

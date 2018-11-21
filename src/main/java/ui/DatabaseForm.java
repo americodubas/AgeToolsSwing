@@ -1,8 +1,6 @@
 package ui;
 
-import interfaces.Panel;
 import model.Database;
-import org.jetbrains.annotations.NotNull;
 import services.DatabaseServiceKt;
 
 import javax.swing.*;
@@ -18,7 +16,7 @@ import static services.DatabaseServiceKt.changeConnectionTo;
 import static services.DatabaseServiceKt.isDatabaseNameAlreadyUsed;
 
 @SuppressWarnings("unchecked")
-public class DatabaseForm implements Panel {
+public class DatabaseForm {
     private JFrame frame;
 
     public JPanel databasePanel;
@@ -36,6 +34,7 @@ public class DatabaseForm implements Panel {
     private ResourceBundle words = ResourceBundle.getBundle("words");
 
     public DatabaseForm(JFrame frame) {
+        System.out.println("Database form");
         this.frame = frame;
         setDatabaseList();
         checkDisableDeleteButton();
@@ -171,11 +170,5 @@ public class DatabaseForm implements Panel {
             missing = true;
         }
         return missing;
-    }
-
-    @NotNull
-    @Override
-    public JPanel getPanel() {
-        return databasePanel;
     }
 }
