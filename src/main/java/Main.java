@@ -1,11 +1,13 @@
+import ui.DatabaseForm;
+import ui.MenuBar;
+
 import javax.swing.*;
 
 public class Main {
 
-    private static JFrame frame;
-
     public static void main(String[] args) {
-        frame = new JFrame("AGE TOOLS");
+        JFrame frame = new JFrame("AGE TOOLS");
+        frame.setJMenuBar(new MenuBar(frame));
         frame.setContentPane(new DatabaseForm(frame).databasePanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
