@@ -18,8 +18,8 @@ fun getAllConnectionFiles(): List<ConnectionFile> {
     if ( !File(path + connectionFileJsonFileName).exists() ) {
         createNewFile()
     }
-    val databaseTypeToken = object : TypeToken<List<ConnectionFile>>() {}
-    return jsonFileToList(databaseJsonFileName, databaseTypeToken)
+    val connectionFileTypeToken = object : TypeToken<List<ConnectionFile>>() {}
+    return jsonFileToList(connectionFileJsonFileName, connectionFileTypeToken)
 }
 
 private fun createNewFile() {

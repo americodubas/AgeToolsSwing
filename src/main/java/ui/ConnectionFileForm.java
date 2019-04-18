@@ -1,8 +1,7 @@
 package ui;
 
-import model.Database;
-import org.jetbrains.annotations.NotNull;
-import services.DatabaseServiceKt;
+import model.ConnectionFile;
+import services.ConnectionFileServiceKt;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -13,30 +12,27 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import static services.DatabaseServiceKt.changeConnectionTo;
-import static services.DatabaseServiceKt.isDatabaseNameAlreadyUsed;
-
 public class ConnectionFileForm {
     private JFrame frame;
 
-    public JPanel databasePanel;
-    private JList databaseList;
+    public JPanel connectionFieldPanel;
+    private JList connectionFileList;
     private JButton addButton;
     private JButton saveButton;
     private JButton deleteButton;
     private JTextField nameField;
     private JTextField userField;
     private JTextField urlField;
-    private JButton changeToThisDatabaseButton;
+    private JButton changeToThisDatabaseButton;//TODO take this out
 
-    private DefaultListModel databaseModel;
+    private DefaultListModel connectionFileModel;
     private int id;
     private ResourceBundle words = ResourceBundle.getBundle("words");
 
     public ConnectionFileForm(JFrame frame) {
         System.out.println("Connection form");
         this.frame = frame;
-        setDatabaseList();
+        setConnectionFileList();
         checkDisableDeleteButton();
         setAddButtonListener();
         setSaveButtonListener();
@@ -44,37 +40,52 @@ public class ConnectionFileForm {
         setChangeButtonListener();
     }
 
+    //TODO remove
     private void setChangeButtonListener() {
         changeToThisDatabaseButton.setMnemonic(KeyEvent.VK_C);
         changeToThisDatabaseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changeConnectionTo(id);
+//                changeConnectionTo(id);
                 Toast.makeText(frame, words.getString("connection.changed"));
             }
         });
     }
 
+    /**
+     * Set deleteButton listener.
+     * When clicked delete the selected connection file as long as it is not the last.
+     * After this selected the first connection file remaining.
+     */
     private void setDeleteButtonListener() {
         deleteButton.setMnemonic(KeyEvent.VK_D);
         deleteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (canDelete()) {
-                    DatabaseServiceKt.deleteDatabaseBy(id);
-                    databaseModel.remove(databaseList.getSelectedIndex());
+                    ConnectionFileServiceKt.deleteConnectionFileBy(id);
+                    connectionFileModel.remove(connectionFileList.getSelectedIndex());
                     checkDisableDeleteButton();
-                    selectFirstDatabase();
+                    selectFirstConnectionFile();
                 } else {
-                    Toast.makeText(frame, words.getString("can.not.delete"));
+                    Toast.makeText(frame, words.getString("can.not.delete.connection.file"));
                 }
             }
         });
     }
 
+    /**
+     * If connectionFileModel size is larger than one, the register can be deleted
+     * @return boolean, true if the register can be deleted
+     */
     private boolean canDelete() {
-        return databaseModel.size() > 1;
+        return connectionFileModel.size() > 1;
     }
 
+    /**
+     * Set saveButton listener.
+     * When clicked set the fields in the selected connection field by it's id,
+     * Shows a toast if the name is already used by another connection file.
+     */
     private void setSaveButtonListener() {
         saveButton.setMnemonic(KeyEvent.VK_S);
         saveButton.addActionListener(new ActionListener() {
@@ -82,93 +93,121 @@ public class ConnectionFileForm {
                 if (isMissingRequiredFields()){
                     return;
                 }
-                if (isDatabaseNameAlreadyUsed(nameField.getText(), id)) {
+                if (ConnectionFileServiceKt.isConnectionFileNameAlreadyUsed(nameField.getText(), id)) {
                     Toast.makeText(frame,words.getString("name.used"));
                     return;
                 }
-                Database database = DatabaseServiceKt.getDatabaseBy(id);
-                if (database != null) {
-                    database.setName(nameField.getText());
-                    database.setUser(userField.getText());
-                    database.setUrl(urlField.getText());
-                    DatabaseServiceKt.updateDatabase(database);
-                    databaseModel.set(databaseList.getSelectedIndex(), nameField.getText());
+                ConnectionFile connectionFile = ConnectionFileServiceKt.getConnectionFileBy(id);
+                if (connectionFile != null) {
+                    connectionFile.setName(nameField.getText());
+                    //TODO change fields
+//                    database.setUser(userField.getText());
+//                    database.setUrl(urlField.getText());
+                    ConnectionFileServiceKt.updateConnectionFile(connectionFile);
+                    connectionFileModel.set(connectionFileList.getSelectedIndex(), nameField.getText());
                 } else {
-                    Toast.makeText(frame,words.getString("error.database"));
+                    Toast.makeText(frame,words.getString("error.connection.file"));
                 }
             }
         });
     }
 
+    /**
+     * Set addButton listener.
+     * When clicked creates a new connection file and add it's name to connectionFileModel.
+     * Call checkDisableDeleteButton to see if the button needs to be enabled.
+     */
     private void setAddButtonListener() {
         addButton.setMnemonic(KeyEvent.VK_A);
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                databaseModel.addElement(DatabaseServiceKt.createDatabase().getName());
+                connectionFileModel.addElement(ConnectionFileServiceKt.createConnectionFile().getName());
                 checkDisableDeleteButton();
             }
         });
     }
 
+    /**
+     * If there is only one register in connectionFileModel disable the deleteButton
+     */
     private void checkDisableDeleteButton() {
-        deleteButton.setEnabled(databaseModel.size() > 1);
+        deleteButton.setEnabled(connectionFileModel.size() > 1);
     }
 
-    private void setDatabaseList() {
-        getDatabaseModelFromJson();
-        databaseList.setModel(databaseModel);
-        databaseList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        databaseList.setLayoutOrientation(JList.VERTICAL);
-        setDatabaseSelectionListener();
-        selectFirstDatabase();
+    /**
+     * Set connectionFileList from json
+     * Set the selection listener and select the first connection file
+     */
+    private void setConnectionFileList() {
+        getConnectionFileModelFromJson();
+        connectionFileList.setModel(connectionFileModel);
+        connectionFileList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        connectionFileList.setLayoutOrientation(JList.VERTICAL);
+        setConnectionFileSelectionListener();
+        selectFirstConnectionFile();
     }
 
-    private void setDatabaseSelectionListener() {
-        databaseList.addListSelectionListener(new ListSelectionListener() {
+    /**
+     * Set the selection listener.
+     * When a connection file is selected, fill the fields with it's data
+     */
+    private void setConnectionFileSelectionListener() {
+        connectionFileList.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
-                if (databaseList.getSelectedIndex() < 0) {
+                if (connectionFileList.getSelectedIndex() < 0) {
                     return;
                 }
-                Database database = DatabaseServiceKt.getDatabaseBy((String) databaseModel.get(databaseList.getSelectedIndex()));
-                if (database != null) {
-                    nameField.setText(database.getName());
-                    userField.setText(database.getUser());
-                    urlField.setText(database.getUrl());
-                    id = database.getId();
+                ConnectionFile connectionFile = ConnectionFileServiceKt.getConnectionFileBy((String) connectionFileModel.get(connectionFileList.getSelectedIndex()));
+                if (connectionFile != null) {
+                    nameField.setText(connectionFile.getName());
+                    //TODO change fields
+//                    userField.setText(database.getUser());
+//                    urlField.setText(database.getUrl());
+                    id = connectionFile.getId();
                 } else {
-                    Toast.makeText(frame, words.getString("error.database"));
+                    Toast.makeText(frame, words.getString("error.connection.file"));
                 }
             }
         });
     }
 
-    private void selectFirstDatabase() {
-        databaseList.setSelectedIndex(0);
+    /**
+     * Select the first connection file from the connectionFileList
+     */
+    private void selectFirstConnectionFile() {
+        connectionFileList.setSelectedIndex(0);
     }
 
-    private void getDatabaseModelFromJson() {
-        databaseModel = new DefaultListModel();
-        ArrayList<String> allDatabasesNames = DatabaseServiceKt.getAllDatabasesNames();
-        for (String name: allDatabasesNames) {
-            databaseModel.addElement(name);
+    /**
+     * Get the names of all connection files and put them in the model
+     */
+    private void getConnectionFileModelFromJson() {
+        connectionFileModel = new DefaultListModel();
+        ArrayList<String> allConnectionFilesNames = ConnectionFileServiceKt.getAllConnectionFilesNames();
+        for (String name: allConnectionFilesNames) {
+            connectionFileModel.addElement(name);
         }
     }
 
-
+    /**
+     * Verify if all required fields are filled
+     * @return boolean, true if all required fields are filled
+     */
     private boolean isMissingRequiredFields() {
         boolean missing = false;
         if (nameField.getText().trim().length() == 0) {
             Toast.makeText(frame, words.getString("name.required"));
             missing = true;
         }
-        if (!missing && userField.getText().trim().length() == 0) {
-            Toast.makeText(frame, words.getString("user.required"));
-            missing = true;
-        }
-        if (!missing && urlField.getText().trim().length() == 0) {
-            Toast.makeText(frame, words.getString("url.required"));
-            missing = true;
-        }
+        //TODO change fields
+//        if (!missing && userField.getText().trim().length() == 0) {
+//            Toast.makeText(frame, words.getString("user.required"));
+//            missing = true;
+//        }
+//        if (!missing && urlField.getText().trim().length() == 0) {
+//            Toast.makeText(frame, words.getString("url.required"));
+//            missing = true;
+//        }
         return missing;
     }
 

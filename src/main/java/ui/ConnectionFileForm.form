@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ui.ConnectionFileForm">
-  <grid id="27dc6" binding="databasePanel" layout-manager="GridLayoutManager" row-count="5" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="connectionFieldPanel" layout-manager="GridLayoutManager" row-count="5" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
       <xy x="20" y="20" width="530" height="400"/>
@@ -108,7 +108,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="91968" class="javax.swing.JList" binding="databaseList">
+          <component id="91968" class="javax.swing.JList" binding="connectionFileList">
             <constraints/>
             <properties>
               <background color="-12500671"/>

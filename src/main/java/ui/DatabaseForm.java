@@ -65,7 +65,7 @@ public class DatabaseForm {
                     checkDisableDeleteButton();
                     selectFirstDatabase();
                 } else {
-                    Toast.makeText(frame, words.getString("can.not.delete"));
+                    Toast.makeText(frame, words.getString("can.not.delete.database"));
                 }
             }
         });
