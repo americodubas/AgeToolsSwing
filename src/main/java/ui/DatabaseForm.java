@@ -1,6 +1,8 @@
 package ui;
 
+import model.ConnectionFile;
 import model.Database;
+import services.ConnectionFileServiceKt;
 import services.DatabaseServiceKt;
 
 import javax.swing.*;
@@ -21,21 +23,25 @@ public class DatabaseForm {
 
     public JPanel databasePanel;
     private JList databaseList;
+    private JList passwordList;
     private JButton addButton;
     private JButton saveButton;
     private JButton deleteButton;
     private JTextField nameField;
     private JTextField userField;
     private JTextField urlField;
+    private JTextField passwordField;
     private JButton changeToThisDatabaseButton;
 
     private DefaultListModel databaseModel;
+    private DefaultListModel passwordModel;
     private int id;
     private ResourceBundle words = ResourceBundle.getBundle("words");
 
     public DatabaseForm(JFrame frame) {
         this.frame = frame;
         setDatabaseList();
+        setPasswordList();
         checkDisableDeleteButton();
         setAddButtonListener();
         setSaveButtonListener();
@@ -150,6 +156,48 @@ public class DatabaseForm {
         databaseList.setLayoutOrientation(JList.VERTICAL);
         setDatabaseSelectionListener();
         selectFirstDatabase();
+    }
+
+    /**
+     * Get the names of all connection files and put them in the model. (one password per connection file)
+     */
+    private void setPasswordList() {
+        getPasswordModelFromJson();
+        passwordList.setModel(passwordModel);
+        databaseList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        databaseList.setLayoutOrientation(JList.VERTICAL);
+        setPasswordSelectionListener();
+    }
+
+    /**
+     * Set the selection listener.
+     * When a password is selected, fill the fields with it's data
+     */
+    private void setPasswordSelectionListener() {
+        passwordList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (passwordList.getSelectedIndex() < 0) {
+                    return;
+                }
+                //TODO get password from database id and connectionFile id
+                ConnectionFile connectionFile = ConnectionFileServiceKt.getConnectionFileBy((String) passwordModel.get(passwordList.getSelectedIndex()));
+                if (connectionFile != null) {
+
+                }
+            }
+        });
+    }
+
+    /**
+     * Get the names of all connection files and put them in the model. (one password per connection file)
+     */
+    private void getPasswordModelFromJson() {
+        passwordModel = new DefaultListModel();
+        ArrayList<String> allConnectionFilesNames = ConnectionFileServiceKt.getAllConnectionFilesNames();
+        for (String name: allConnectionFilesNames) {
+            passwordModel.addElement(name);
+        }
     }
 
     /**

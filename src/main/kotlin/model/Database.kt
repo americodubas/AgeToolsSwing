@@ -8,8 +8,7 @@ data class Database(
         var id: Int = 1
         , var name: String = "New"
         , var user: String = "User"
-        , var url: String = "URL"
-        , var databasePasswordFileList: List<DatabasePasswordFile> = emptyList())
+        , var url: String = "URL")
     : Serializable, Nameable, Identifiable {
 
     override fun getNewName() = name
