@@ -18,6 +18,9 @@ private val files = arrayOf(
         ConnectionFile(2, "ini", "c:\\jdsv\\agesocproc\\ini.xml", "username", "url")
 )
 
+/**
+ * Get a list of all [ConnectionFile] and change then to the chosen [Database]
+ */
 fun changeConnectionTo(id: Int) {
     val database = getDatabaseBy(id)!!
     files.forEach {
@@ -30,6 +33,9 @@ fun changeConnectionTo(id: Int) {
     }
 }
 
+/**
+ * Saves changes made in the document
+ */
 private fun saveDocument(document: Document, filepath: String) {
     val transformer = TransformerFactory.newInstance().newTransformer()
     val source = DOMSource(document)
@@ -38,13 +44,24 @@ private fun saveDocument(document: Document, filepath: String) {
     transformer.transform(source, result)
 }
 
+/**
+ * Search for the [tagName] in the [document] and change its value to [tagValue]
+ */
 private fun setTag(tagName: String, tagValue: String, document: Document) {
     document.getElementsByTagName(tagName).item(0).textContent = tagValue
 }
 
+/**
+ * Returns the document from the [filepath]
+ */
 private fun getDocument(filepath: String) =
         DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(File(filepath))
 
+/**
+ * Creates a new [Database],
+ * sets the default id and name using the [generateId] and [generateName]
+ * then writes it in [databaseJsonFileName]
+ */
 fun createDatabase(): Database {
     val allDatabases = getAllDatabases()
     val newDatabase = Database(generateId(allDatabases), generateName(allDatabases))
@@ -52,6 +69,9 @@ fun createDatabase(): Database {
     return newDatabase
 }
 
+/**
+ * Returns all [Database] from [databaseJsonFileName]
+ */
 fun getAllDatabases(): List<Database> {
     if ( !File(path + databaseJsonFileName).exists() ) {
         createNewFile()
@@ -60,14 +80,26 @@ fun getAllDatabases(): List<Database> {
     return jsonFileToList(databaseJsonFileName, databaseTypeToken)
 }
 
+/**
+ * Creates the [databaseJsonFileName]
+ */
 private fun createNewFile() {
     writeJsonFile(listOf(Database()), databaseJsonFileName)
 }
 
+/**
+ * Returns a [Database] by its name
+ */
 fun getDatabaseBy(name: String) = getAllDatabases().find { it.name == name }
 
+/**
+ * Returns a [Database] by its id
+ */
 fun getDatabaseBy(id: Int) = getAllDatabases().find { it.id == id }
 
+/**
+ * Returns the names of all databases
+ */
 fun getAllDatabasesNames(): ArrayList<String> {
     val allDatabases = getAllDatabases()
     val names = ArrayList<String>(allDatabases.size)
@@ -77,6 +109,9 @@ fun getAllDatabasesNames(): ArrayList<String> {
     return names
 }
 
+/**
+ * Update the [Database]
+ */
 fun updateDatabase(new: Database) {
     val allDatabases = getAllDatabases()
     val old = allDatabases.find { it.id == new.id }
@@ -90,10 +125,16 @@ fun updateDatabase(new: Database) {
     writeJsonFile(allDatabases, databaseJsonFileName)
 }
 
+/**
+ * Delete [Database] by its id
+ */
 fun deleteDatabaseBy(id: Int) {
     val m = getAllDatabases().toMutableList()
     m.removeAt(m.indexOfFirst { it.id == id })
     writeJsonFile(m, databaseJsonFileName)
 }
 
+/**
+ * Check if [Database] name is already used
+ */
 fun isDatabaseNameAlreadyUsed(name: String, id: Int) = getAllDatabases().find { it.name == name && it.id != id } != null
