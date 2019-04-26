@@ -188,15 +188,22 @@ public class ConnectionFileForm {
             Toast.makeText(frame, words.getString("name.required"));
             missing = true;
         }
-        //TODO change fields
-//        if (!missing && userField.getText().trim().length() == 0) {
-//            Toast.makeText(frame, words.getString("user.required"));
-//            missing = true;
-//        }
-//        if (!missing && urlField.getText().trim().length() == 0) {
-//            Toast.makeText(frame, words.getString("url.required"));
-//            missing = true;
-//        }
+        if (filepathField.getText().trim().length() == 0) {
+            Toast.makeText(frame, words.getString("path.required"));
+            missing = true;
+        }
+        if (userTagField.getText().trim().length() == 0) {
+            Toast.makeText(frame, words.getString("user.tag.required"));
+            missing = true;
+        }
+        if (urlTagField.getText().trim().length() == 0) {
+            Toast.makeText(frame, words.getString("url.tag.required"));
+            missing = true;
+        }
+        if (passwordTagField.getText().trim().length() == 0) {
+            Toast.makeText(frame, words.getString("password.tag.required"));
+            missing = true;
+        }
         return missing;
     }
 
