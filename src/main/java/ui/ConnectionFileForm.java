@@ -21,35 +21,22 @@ public class ConnectionFileForm {
     private JButton saveButton;
     private JButton deleteButton;
     private JTextField nameField;
-    private JTextField userField;
-    private JTextField urlField;
-    private JButton changeToThisDatabaseButton;//TODO take this out
+    private JTextField filepathField;
+    private JTextField userTagField;
+    private JTextField urlTagField;
+    private JTextField passwordTagField;
 
     private DefaultListModel connectionFileModel;
     private int id;
     private ResourceBundle words = ResourceBundle.getBundle("words");
 
     public ConnectionFileForm(JFrame frame) {
-        System.out.println("Connection form");
         this.frame = frame;
         setConnectionFileList();
         checkDisableDeleteButton();
         setAddButtonListener();
         setSaveButtonListener();
         setDeleteButtonListener();
-        setChangeButtonListener();
-    }
-
-    //TODO remove
-    private void setChangeButtonListener() {
-        changeToThisDatabaseButton.setMnemonic(KeyEvent.VK_C);
-        changeToThisDatabaseButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-//                changeConnectionTo(id);
-                Toast.makeText(frame, words.getString("connection.changed"));
-            }
-        });
     }
 
     /**
@@ -100,9 +87,10 @@ public class ConnectionFileForm {
                 ConnectionFile connectionFile = ConnectionFileServiceKt.getConnectionFileBy(id);
                 if (connectionFile != null) {
                     connectionFile.setName(nameField.getText());
-                    //TODO change fields
-//                    database.setUser(userField.getText());
-//                    database.setUrl(urlField.getText());
+                    connectionFile.setFilepath(filepathField.getText());
+                    connectionFile.setUserTag(userTagField.getText());
+                    connectionFile.setUrlTag(urlTagField.getText());
+                    connectionFile.setPasswordTag(passwordTagField.getText());
                     ConnectionFileServiceKt.updateConnectionFile(connectionFile);
                     connectionFileModel.set(connectionFileList.getSelectedIndex(), nameField.getText());
                 } else {
@@ -160,9 +148,10 @@ public class ConnectionFileForm {
                 ConnectionFile connectionFile = ConnectionFileServiceKt.getConnectionFileBy((String) connectionFileModel.get(connectionFileList.getSelectedIndex()));
                 if (connectionFile != null) {
                     nameField.setText(connectionFile.getName());
-                    //TODO change fields
-//                    userField.setText(database.getUser());
-//                    urlField.setText(database.getUrl());
+                    filepathField.setText(connectionFile.getFilepath());
+                    userTagField.setText(connectionFile.getUserTag());
+                    urlTagField.setText(connectionFile.getUrlTag());
+                    passwordTagField.setText(connectionFile.getPasswordTag());
                     id = connectionFile.getId();
                 } else {
                     Toast.makeText(frame, words.getString("error.connection.file"));

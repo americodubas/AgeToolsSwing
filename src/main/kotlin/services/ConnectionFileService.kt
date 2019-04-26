@@ -7,6 +7,11 @@ import java.io.File
 
 const val connectionFileJsonFileName = "connectionFile.json"
 
+/**
+ * Creates a new [ConnectionFile],
+ * sets the default id and name using the [generateId] and [generateName]
+ * then writes it in [connectionFileJsonFileName]
+ */
 fun createConnectionFile(): ConnectionFile {
     val allConnectionFiles = getAllConnectionFiles()
     val newConnectionFile = ConnectionFile(generateId(allConnectionFiles), generateName(allConnectionFiles))
@@ -14,6 +19,9 @@ fun createConnectionFile(): ConnectionFile {
     return newConnectionFile
 }
 
+/**
+ * Returns all [ConnectionFile] from [connectionFileJsonFileName]
+ */
 fun getAllConnectionFiles(): List<ConnectionFile> {
     if ( !File(path + connectionFileJsonFileName).exists() ) {
         createNewFile()
@@ -22,14 +30,26 @@ fun getAllConnectionFiles(): List<ConnectionFile> {
     return jsonFileToList(connectionFileJsonFileName, connectionFileTypeToken)
 }
 
+/**
+ * Creates the [connectionFileJsonFileName]
+ */
 private fun createNewFile() {
     writeJsonFile(listOf(ConnectionFile()), connectionFileJsonFileName)
 }
 
+/**
+ * Returns a [ConnectionFile] by its name
+ */
 fun getConnectionFileBy(name: String) = getAllConnectionFiles().find { it.name == name }
 
+/**
+ * Returns a [ConnectionFile] by its id
+ */
 fun getConnectionFileBy(id: Int) = getAllConnectionFiles().find { it.id == id }
 
+/**
+ * Returns the names of all connection files
+ */
 fun getAllConnectionFilesNames(): ArrayList<String> {
     val allConnectionFiles = getAllConnectionFiles()
     val names = ArrayList<String>(allConnectionFiles.size)
@@ -39,6 +59,9 @@ fun getAllConnectionFilesNames(): ArrayList<String> {
     return names
 }
 
+/**
+ * Update the [ConnectionFile]
+ */
 fun updateConnectionFile(new: ConnectionFile) {
     val allConnectionFiles = getAllConnectionFiles()
     val old = allConnectionFiles.find { it.id == new.id }
@@ -53,10 +76,16 @@ fun updateConnectionFile(new: ConnectionFile) {
     writeJsonFile(allConnectionFiles, connectionFileJsonFileName)
 }
 
+/**
+ * Delete [ConnectionFile] by its id
+ */
 fun deleteConnectionFileBy(id: Int) {
     val m = getAllConnectionFiles().toMutableList()
     m.removeAt(m.indexOfFirst { it.id == id })
     writeJsonFile(m, connectionFileJsonFileName)
 }
 
+/**
+ * Check if [ConnectionFile] name is already used
+ */
 fun isConnectionFileNameAlreadyUsed(name: String, id: Int) = getAllConnectionFiles().find { it.name == name && it.id != id } != null
