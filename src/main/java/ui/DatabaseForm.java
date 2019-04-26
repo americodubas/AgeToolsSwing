@@ -34,7 +34,6 @@ public class DatabaseForm {
     private ResourceBundle words = ResourceBundle.getBundle("words");
 
     public DatabaseForm(JFrame frame) {
-        System.out.println("Database form");
         this.frame = frame;
         setDatabaseList();
         checkDisableDeleteButton();
@@ -44,6 +43,10 @@ public class DatabaseForm {
         setChangeButtonListener();
     }
 
+    /**
+     * Set changeToThisDatabaseButton listener.
+     * When clicked change all connection files to the chosen database
+     */
     private void setChangeButtonListener() {
         changeToThisDatabaseButton.setMnemonic(KeyEvent.VK_C);
         changeToThisDatabaseButton.addActionListener(new ActionListener() {
@@ -55,6 +58,11 @@ public class DatabaseForm {
         });
     }
 
+    /**
+     * Set deleteButton listener.
+     * When clicked delete the selected database as long as it is not the last.
+     * After this selected the first database remaining.
+     */
     private void setDeleteButtonListener() {
         deleteButton.setMnemonic(KeyEvent.VK_D);
         deleteButton.addActionListener(new ActionListener() {
@@ -71,10 +79,19 @@ public class DatabaseForm {
         });
     }
 
+    /**
+     * If databaseModel size is larger than one, the register can be deleted
+     * @return boolean, true if the register can be deleted
+     */
     private boolean canDelete() {
         return databaseModel.size() > 1;
     }
 
+    /**
+     * Set saveButton listener.
+     * When clicked set the fields in the selected database by it's id,
+     * Shows a toast if the name is already used by another database.
+     */
     private void setSaveButtonListener() {
         saveButton.setMnemonic(KeyEvent.VK_S);
         saveButton.addActionListener(new ActionListener() {
@@ -100,6 +117,11 @@ public class DatabaseForm {
         });
     }
 
+    /**
+     * Set addButton listener.
+     * When clicked creates a new database and add it's name to databaseModel.
+     * Call checkDisableDeleteButton to see if the button needs to be enabled.
+     */
     private void setAddButtonListener() {
         addButton.setMnemonic(KeyEvent.VK_A);
         addButton.addActionListener(new ActionListener() {
@@ -110,10 +132,17 @@ public class DatabaseForm {
         });
     }
 
+    /**
+     * If there is only one register in databaseModel disable the deleteButton
+     */
     private void checkDisableDeleteButton() {
         deleteButton.setEnabled(databaseModel.size() > 1);
     }
 
+    /**
+     * Set databaseList from json
+     * Set the selection listener and select the first database
+     */
     private void setDatabaseList() {
         getDatabaseModelFromJson();
         databaseList.setModel(databaseModel);
@@ -123,6 +152,10 @@ public class DatabaseForm {
         selectFirstDatabase();
     }
 
+    /**
+     * Set the selection listener.
+     * When a database is selected, fill the fields with it's data
+     */
     private void setDatabaseSelectionListener() {
         databaseList.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
@@ -142,10 +175,16 @@ public class DatabaseForm {
         });
     }
 
+    /**
+     * Select the first database from the databaseList
+     */
     private void selectFirstDatabase() {
         databaseList.setSelectedIndex(0);
     }
 
+    /**
+     * Get the names of all databases and put them in the model
+     */
     private void getDatabaseModelFromJson() {
         databaseModel = new DefaultListModel();
         ArrayList<String> allDatabasesNames = DatabaseServiceKt.getAllDatabasesNames();
@@ -154,7 +193,10 @@ public class DatabaseForm {
         }
     }
 
-
+    /**
+     * Verify if all required fields are filled
+     * @return boolean, true if all required fields are filled
+     */
     private boolean isMissingRequiredFields() {
         boolean missing = false;
         if (nameField.getText().trim().length() == 0) {
