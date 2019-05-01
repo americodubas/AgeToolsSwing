@@ -238,7 +238,7 @@ class DatabaseForm {
                     userField.setText(database.getUser());
                     urlField.setText(database.getUrl());
                     databaseId = database.getId();
-                    selectFirstPassword();
+                    passwordField.setText( DatabasePasswordFileServiceKt.getPassword(databaseId, connectionFileId).getPassword() );
                 } else {
                     Toast.makeText(frame, words.getString("error.database"));
                 }
