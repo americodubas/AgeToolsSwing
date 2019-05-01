@@ -182,8 +182,8 @@ class DatabaseForm {
     void setPasswordList() {
         getPasswordModelFromJson();
         passwordList.setModel(passwordModel);
-        databaseList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        databaseList.setLayoutOrientation(JList.VERTICAL);
+        passwordList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        passwordList.setLayoutOrientation(JList.VERTICAL);
         setPasswordSelectionListener();
         selectFirstPassword();
     }
