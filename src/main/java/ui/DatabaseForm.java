@@ -3,6 +3,7 @@ package ui;
 import model.ConnectionFile;
 import model.Database;
 import services.ConnectionFileServiceKt;
+import services.DatabasePasswordFileServiceKt;
 import services.DatabaseServiceKt;
 
 import javax.swing.*;
@@ -32,13 +33,15 @@ public class DatabaseForm {
     private JTextField urlField;
     private JTextField passwordField;
     private JButton changeToThisDatabaseButton;
+    private JButton savePasswordButton;
 
     private DefaultListModel databaseModel;
     private DefaultListModel passwordModel;
-    private int id;
+    private int databaseId;
+    private int connectionFileId;
     private ResourceBundle words = ResourceBundle.getBundle("words");
 
-    public DatabaseForm(JFrame frame) {
+    DatabaseForm(JFrame frame) {
         this.frame = frame;
         setDatabaseList();
         setPasswordList();
@@ -47,6 +50,7 @@ public class DatabaseForm {
         setSaveButtonListener();
         setDeleteButtonListener();
         setChangeButtonListener();
+        setSavePasswordButtonListener();
     }
 
     /**
@@ -58,8 +62,23 @@ public class DatabaseForm {
         changeToThisDatabaseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changeConnectionTo(id);
+                changeConnectionTo(databaseId);
                 Toast.makeText(frame, words.getString("connection.changed"));
+            }
+        });
+    }
+
+    /**
+     * Set setSavePasswordButtonListener listener.
+     * When clicked save the password for the chosen file and database
+     */
+    private void setSavePasswordButtonListener() {
+        savePasswordButton.setMnemonic(KeyEvent.VK_P);
+        savePasswordButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DatabasePasswordFileServiceKt.updatePassword(databaseId, connectionFileId, passwordField.getText());
+                Toast.makeText(frame, words.getString("password.saved"));
             }
         });
     }
@@ -74,7 +93,7 @@ public class DatabaseForm {
         deleteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (canDelete()) {
-                    DatabaseServiceKt.deleteDatabaseBy(id);
+                    DatabaseServiceKt.deleteDatabaseBy(databaseId);
                     databaseModel.remove(databaseList.getSelectedIndex());
                     checkDisableDeleteButton();
                     selectFirstDatabase();
@@ -95,7 +114,7 @@ public class DatabaseForm {
 
     /**
      * Set saveButton listener.
-     * When clicked set the fields in the selected database by it's id,
+     * When clicked set the fields in the selected database by it's databaseId,
      * Shows a toast if the name is already used by another database.
      */
     private void setSaveButtonListener() {
@@ -105,11 +124,11 @@ public class DatabaseForm {
                 if (isMissingRequiredFields()){
                     return;
                 }
-                if (isDatabaseNameAlreadyUsed(nameField.getText(), id)) {
+                if (isDatabaseNameAlreadyUsed(nameField.getText(), databaseId)) {
                     Toast.makeText(frame,words.getString("name.used"));
                     return;
                 }
-                Database database = DatabaseServiceKt.getDatabaseBy(id);
+                Database database = DatabaseServiceKt.getDatabaseBy(databaseId);
                 if (database != null) {
                     database.setName(nameField.getText());
                     database.setUser(userField.getText());
@@ -161,17 +180,18 @@ public class DatabaseForm {
     /**
      * Get the names of all connection files and put them in the model. (one password per connection file)
      */
-    private void setPasswordList() {
+    void setPasswordList() {
         getPasswordModelFromJson();
         passwordList.setModel(passwordModel);
         databaseList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         databaseList.setLayoutOrientation(JList.VERTICAL);
         setPasswordSelectionListener();
+        selectFirstPassword();
     }
 
     /**
      * Set the selection listener.
-     * When a password is selected, fill the fields with it's data
+     * When a file from passwordList is selected, find the connection file and the database and show the stored password
      */
     private void setPasswordSelectionListener() {
         passwordList.addListSelectionListener(new ListSelectionListener() {
@@ -180,10 +200,12 @@ public class DatabaseForm {
                 if (passwordList.getSelectedIndex() < 0) {
                     return;
                 }
-                //TODO get password from database id and connectionFile id
                 ConnectionFile connectionFile = ConnectionFileServiceKt.getConnectionFileBy((String) passwordModel.get(passwordList.getSelectedIndex()));
                 if (connectionFile != null) {
-
+                    connectionFileId = connectionFile.getId();
+                    passwordField.setText( DatabasePasswordFileServiceKt.getPassword(databaseId, connectionFileId).getPassword() );
+                } else {
+                    Toast.makeText(frame, words.getString("error.database"));
                 }
             }
         });
@@ -215,7 +237,7 @@ public class DatabaseForm {
                     nameField.setText(database.getName());
                     userField.setText(database.getUser());
                     urlField.setText(database.getUrl());
-                    id = database.getId();
+                    databaseId = database.getId();
                 } else {
                     Toast.makeText(frame, words.getString("error.database"));
                 }
@@ -228,6 +250,13 @@ public class DatabaseForm {
      */
     private void selectFirstDatabase() {
         databaseList.setSelectedIndex(0);
+    }
+
+    /**
+     * Select the first password from the passwordList
+     */
+    private void selectFirstPassword() {
+        passwordList.setSelectedIndex(0);
     }
 
     /**

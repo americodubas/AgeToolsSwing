@@ -2,6 +2,7 @@ package services
 
 import com.google.gson.reflect.TypeToken
 import model.ConnectionFile
+import model.DatabasePasswordFile
 import util.*
 import java.io.File
 
@@ -83,6 +84,7 @@ fun deleteConnectionFileBy(id: Int) {
     val m = getAllConnectionFiles().toMutableList()
     m.removeAt(m.indexOfFirst { it.id == id })
     writeJsonFile(m, connectionFileJsonFileName)
+    deletePasswordByconnectionFileId(id)
 }
 
 /**

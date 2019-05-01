@@ -132,6 +132,7 @@ fun deleteDatabaseBy(id: Int) {
     val m = getAllDatabases().toMutableList()
     m.removeAt(m.indexOfFirst { it.id == id })
     writeJsonFile(m, databaseJsonFileName)
+    deletePasswordByDatabaseId(id)
 }
 
 /**

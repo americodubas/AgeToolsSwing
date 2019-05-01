@@ -28,9 +28,26 @@ fun getPassword(databaseId: Int, connectionFileId: Int): DatabasePasswordFile {
  */
 fun updatePassword(databaseId: Int, connectionFileId: Int, password: String) {
     val allPasswords = getAllPasswords()
-    val databasePasswordFile = allPasswords.find { it.databaseId == databaseId && it.connectionFileId == connectionFileId }
-    databasePasswordFile?.password = password
+    allPasswords.find { it.databaseId == databaseId && it.connectionFileId == connectionFileId }?.password = password
     writeJsonFile(allPasswords, databasePasswordFileName)
+}
+
+/**
+ * Delete [DatabasePasswordFile] by database is id
+ */
+fun deletePasswordByDatabaseId(databaseId: Int) {
+    val m = getAllPasswords().toMutableList()
+    m.removeAll { it.databaseId == databaseId }
+    writeJsonFile(m, databasePasswordFileName)
+}
+
+/**
+ * Delete [DatabasePasswordFile] by connection file is id
+ */
+fun deletePasswordByconnectionFileId(connectionFileId: Int) {
+    val m = getAllPasswords().toMutableList()
+    m.removeAll { it.connectionFileId == connectionFileId }
+    writeJsonFile(m, databasePasswordFileName)
 }
 
 /**

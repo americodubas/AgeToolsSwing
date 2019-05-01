@@ -30,7 +30,7 @@ public class ConnectionFileForm {
     private int id;
     private ResourceBundle words = ResourceBundle.getBundle("words");
 
-    public ConnectionFileForm(JFrame frame) {
+    ConnectionFileForm(JFrame frame) {
         this.frame = frame;
         setConnectionFileList();
         checkDisableDeleteButton();
