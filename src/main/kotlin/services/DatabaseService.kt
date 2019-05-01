@@ -23,11 +23,14 @@ private val files = arrayOf(
  */
 fun changeConnectionTo(id: Int) {
     val database = getDatabaseBy(id)!!
-    files.forEach {
+    val allConnectionFiles = getAllConnectionFiles()
+
+    allConnectionFiles.forEach {
         val document = getDocument(it.filepath)
 
         setTag(it.userTag, database.user, document)
         setTag(it.urlTag, database.url, document)
+        setTag(it.passwordTag, getPassword(database.id, it.id).password, document)
 
         saveDocument(document, it.filepath)
     }
