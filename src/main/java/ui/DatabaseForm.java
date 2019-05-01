@@ -238,6 +238,7 @@ class DatabaseForm {
                     userField.setText(database.getUser());
                     urlField.setText(database.getUrl());
                     databaseId = database.getId();
+                    selectFirstPassword();
                 } else {
                     Toast.makeText(frame, words.getString("error.database"));
                 }
