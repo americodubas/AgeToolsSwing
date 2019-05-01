@@ -6,10 +6,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import util.jsonFileToList
-import util.jsonFileToObject
-import util.path
-import util.writeJsonFile
 import java.io.File
 
 class JsonHelperKtTest {
@@ -45,7 +41,7 @@ class JsonHelperKtTest {
         val databases = listOf(database1, database2)
         writeJsonFile(databases, fileName)
         val databaseTypeToken = object : TypeToken<List<Database>>() {}
-        val databasesFromJson = jsonFileToList<Database>(fileName, databaseTypeToken)
+        val databasesFromJson = jsonFileToList(fileName, databaseTypeToken)
         assertEquals(databases, databasesFromJson)
     }
 }

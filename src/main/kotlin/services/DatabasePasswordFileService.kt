@@ -44,7 +44,7 @@ fun deletePasswordByDatabaseId(databaseId: Int) {
 /**
  * Delete [DatabasePasswordFile] by connection file is id
  */
-fun deletePasswordByconnectionFileId(connectionFileId: Int) {
+fun deletePasswordByConnectionFileId(connectionFileId: Int) {
     val m = getAllPasswords().toMutableList()
     m.removeAll { it.connectionFileId == connectionFileId }
     writeJsonFile(m, databasePasswordFileName)

@@ -19,8 +19,8 @@ import static services.DatabaseServiceKt.changeConnectionTo;
 import static services.DatabaseServiceKt.isDatabaseNameAlreadyUsed;
 
 @SuppressWarnings("unchecked")
-public class DatabaseForm {
-    private JFrame frame;
+class DatabaseForm {
+    private final JFrame frame;
 
     public JPanel databasePanel;
     private JList databaseList;
@@ -39,7 +39,7 @@ public class DatabaseForm {
     private DefaultListModel passwordModel;
     private int databaseId;
     private int connectionFileId;
-    private ResourceBundle words = ResourceBundle.getBundle("words");
+    private final ResourceBundle words = ResourceBundle.getBundle("words");
 
     DatabaseForm(JFrame frame) {
         this.frame = frame;

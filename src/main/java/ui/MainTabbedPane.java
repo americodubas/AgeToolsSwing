@@ -7,14 +7,14 @@ import java.awt.event.KeyEvent;
 
 public class MainTabbedPane extends JTabbedPane implements ChangeListener {
 
-    private DatabaseForm databaseForm;
+    private final DatabaseForm databaseForm;
 
     /**
      * Main tab where is placed two tabs
      * First tab with all saved databases
      * Second tab with all connection files that need to be changed when a database is selected
      * Also implements the change listener to update the information on the tabs if needed
-     * @param frame
+     * @param frame frame that will contain the MainTabbedPane
      */
     public MainTabbedPane(JFrame frame) {
         super();

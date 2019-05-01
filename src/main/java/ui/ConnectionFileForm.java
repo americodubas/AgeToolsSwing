@@ -12,8 +12,8 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class ConnectionFileForm {
-    private JFrame frame;
+class ConnectionFileForm {
+    private final JFrame frame;
 
     public JPanel connectionFieldPanel;
     private JList connectionFileList;
@@ -28,7 +28,7 @@ public class ConnectionFileForm {
 
     private DefaultListModel connectionFileModel;
     private int id;
-    private ResourceBundle words = ResourceBundle.getBundle("words");
+    private final ResourceBundle words = ResourceBundle.getBundle("words");
 
     ConnectionFileForm(JFrame frame) {
         this.frame = frame;

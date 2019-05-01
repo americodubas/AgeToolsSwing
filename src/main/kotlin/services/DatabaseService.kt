@@ -13,11 +13,6 @@ import javax.xml.transform.stream.StreamResult
 
 const val databaseJsonFileName = "database.json"
 
-private val files = arrayOf(
-        ConnectionFile(1, "ds", "c:\\jdsv\\ds\\projetos-ds.xml", "user-name", "connection-url"),
-        ConnectionFile(2, "ini", "c:\\jdsv\\agesocproc\\ini.xml", "username", "url")
-)
-
 /**
  * Get a list of all [ConnectionFile] and change then to the chosen [Database]
  */
