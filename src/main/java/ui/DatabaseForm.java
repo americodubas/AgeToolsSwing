@@ -78,7 +78,6 @@ class DatabaseForm {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DatabasePasswordFileServiceKt.updatePassword(databaseId, connectionFileId, passwordField.getText());
-                Toast.makeText(frame, words.getString("password.saved"));
             }
         });
     }
