@@ -15,8 +15,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import static services.DatabaseServiceKt.changeConnectionTo;
-import static services.DatabaseServiceKt.isDatabaseNameAlreadyUsed;
+import static services.DatabaseServiceKt.*;
 
 @SuppressWarnings("unchecked")
 class DatabaseForm {
@@ -34,6 +33,7 @@ class DatabaseForm {
     private JTextField passwordField;
     private JButton changeToThisDatabaseButton;
     private JButton savePasswordButton;
+    private JTextField currentConnectionField;
 
     private DefaultListModel databaseModel;
     private DefaultListModel passwordModel;
@@ -51,6 +51,11 @@ class DatabaseForm {
         setDeleteButtonListener();
         setChangeButtonListener();
         setSavePasswordButtonListener();
+        setCurrentConnectionField();
+    }
+
+    private void setCurrentConnectionField() {
+        currentConnectionField.setText(getCurrentConnection());
     }
 
     /**
@@ -64,6 +69,7 @@ class DatabaseForm {
             public void actionPerformed(ActionEvent e) {
                 changeConnectionTo(databaseId);
                 Toast.makeText(frame, words.getString("connection.changed"));
+                setCurrentConnectionField();
             }
         });
     }

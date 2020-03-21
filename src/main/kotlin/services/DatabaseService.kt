@@ -13,6 +13,22 @@ import javax.xml.transform.stream.StreamResult
 
 const val databaseJsonFileName = "database.json"
 
+fun getCurrentConnection(): String {
+    val allConnectionFiles = getAllConnectionFiles()
+    val allDatabases = getAllDatabases()
+    var currentConnection = ""
+    allConnectionFiles.forEach {
+        currentConnection += "[" + it.name + " : " + getDatabaseName(it, allDatabases) + "] "
+    }
+    return currentConnection
+}
+
+private fun getDatabaseName(connectionFile: ConnectionFile, allDatabases: List<Database>): String {
+    val document = getDocument(connectionFile.filepath)
+    val database = allDatabases.find { getTag(connectionFile.userTag, document) == it.user }
+    return database?.name ?: "NF"
+}
+
 /**
  * Get a list of all [ConnectionFile] and change then to the chosen [Database]
  */
@@ -48,6 +64,12 @@ private fun saveDocument(document: Document, filepath: String) {
 private fun setTag(tagName: String, tagValue: String, document: Document) {
     document.getElementsByTagName(tagName).item(0).textContent = tagValue
 }
+
+/**
+ * Search for the [tagName] in the [document] and return it
+ */
+private fun getTag(tagName: String, document: Document) =
+        document.getElementsByTagName(tagName).item(0).textContent
 
 /**
  * Returns the document from the [filepath]
