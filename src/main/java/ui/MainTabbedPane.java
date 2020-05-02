@@ -21,8 +21,10 @@ public class MainTabbedPane extends JTabbedPane implements ChangeListener {
         databaseForm = new DatabaseForm(frame);
         this.addTab("1 Database", databaseForm.databasePanel);
         this.addTab("2 Connection", new ConnectionFileForm(frame).connectionFieldPanel);
+        this.addTab("3 User", new UserForm(frame).userFieldPanel);
         this.setMnemonicAt(0, KeyEvent.VK_1);
         this.setMnemonicAt(1, KeyEvent.VK_2);
+        this.setMnemonicAt(2, KeyEvent.VK_3);
         this.addChangeListener(this);
     }
 
