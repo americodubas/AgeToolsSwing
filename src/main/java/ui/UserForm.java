@@ -10,7 +10,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -101,11 +104,11 @@ public class UserForm {
      * @param begin start of the site url
      * @return url
      */
-    private String getUrlForUser(String begin) {
-        return begin + "/WebSoc/LoginAction.do?usu="
-            + nameField.getText() + "&senha="
-            + passwordField.getText() + "&empsoc="
-            + codeField.getText();
+    private String getUrlForUser(String begin) throws UnsupportedEncodingException {
+        String parameters = "usu=" + URLEncoder.encode(nameField.getText(), StandardCharsets.UTF_8.toString()) +
+                "&senha=" + URLEncoder.encode(passwordField.getText(), StandardCharsets.UTF_8.toString()) +
+                "&empsoc=" + URLEncoder.encode(codeField.getText(), StandardCharsets.UTF_8.toString());
+        return begin + "/WebSoc/LoginAction.do?" + parameters;
     }
 
     /**
