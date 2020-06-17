@@ -37,6 +37,14 @@ class ConnectionFileForm {
         setAddButtonListener();
         setSaveButtonListener();
         setDeleteButtonListener();
+        removeFieldBorder();
+    }
+
+    private void removeFieldBorder() {
+        nameField.setBorder(BorderFactory.createEmptyBorder());
+        filepathField.setBorder(BorderFactory.createEmptyBorder());
+        userTagField.setBorder(BorderFactory.createEmptyBorder());
+        urlTagField.setBorder(BorderFactory.createEmptyBorder());
     }
 
     /**

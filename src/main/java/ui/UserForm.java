@@ -49,6 +49,13 @@ public class UserForm {
         setHSocButtonListener();
         setPSocButtonListener();
         setBSocButtonListener();
+        removeFieldBorder();
+    }
+
+    private void removeFieldBorder() {
+        nameField.setBorder(BorderFactory.createEmptyBorder());
+        passwordField.setBorder(BorderFactory.createEmptyBorder());
+        codeField.setBorder(BorderFactory.createEmptyBorder());
     }
 
     private void setHSocButtonListener() {

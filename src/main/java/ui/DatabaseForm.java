@@ -52,6 +52,14 @@ class DatabaseForm {
         setChangeButtonListener();
         setSavePasswordButtonListener();
         setCurrentConnectionField();
+        removeFieldBorder();
+    }
+
+    private void removeFieldBorder() {
+        nameField.setBorder(BorderFactory.createEmptyBorder());
+        passwordField.setBorder(BorderFactory.createEmptyBorder());
+        urlField.setBorder(BorderFactory.createEmptyBorder());
+        userField.setBorder(BorderFactory.createEmptyBorder());
     }
 
     private void setCurrentConnectionField() {

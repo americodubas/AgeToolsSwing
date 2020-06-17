@@ -3,6 +3,7 @@ package ui;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class MainTabbedPane extends JTabbedPane implements ChangeListener {
@@ -19,13 +20,15 @@ public class MainTabbedPane extends JTabbedPane implements ChangeListener {
     public MainTabbedPane(JFrame frame) {
         super();
         databaseForm = new DatabaseForm(frame);
-        this.addTab("1 Database", databaseForm.databasePanel);
-        this.addTab("2 Connection", new ConnectionFileForm(frame).connectionFieldPanel);
-        this.addTab("3 User", new UserForm(frame).userFieldPanel);
+        this.addTab("1 Database", CustomIcon.getInstance().storageIcon, databaseForm.databasePanel);
+        this.addTab("2 Connection", CustomIcon.getInstance().syncIcon,  new ConnectionFileForm(frame).connectionFieldPanel);
+        this.addTab("3 User", CustomIcon.getInstance().accountIcon, new UserForm(frame).userFieldPanel);
         this.setMnemonicAt(0, KeyEvent.VK_1);
         this.setMnemonicAt(1, KeyEvent.VK_2);
         this.setMnemonicAt(2, KeyEvent.VK_3);
         this.addChangeListener(this);
+        this.setBackground(CustomColor.DARK_GREY);
+        this.setForeground(Color.WHITE);
     }
 
     @Override

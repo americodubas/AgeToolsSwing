@@ -6,15 +6,15 @@
       <xy x="20" y="20" width="600" height="400"/>
     </constraints>
     <properties>
-      <background color="-3158065"/>
+      <background color="-12696756"/>
       <foreground color="-12500671"/>
       <inheritsPopupMenu value="false"/>
       <minimumSize width="600" height="400"/>
       <preferredSize width="600" height="400"/>
     </properties>
-    <border type="bevel-lowered" title-resource-bundle="words" title-key="database">
+    <border type="bevel-raised" title-resource-bundle="words" title-key="database">
       <font name="Verdana" size="16" style="1"/>
-      <title-color color="-16777216"/>
+      <title-color color="-1"/>
     </border>
     <children>
       <component id="c2ded" class="javax.swing.JButton" binding="addButton">
@@ -22,7 +22,9 @@
           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <background color="-1315861"/>
+          <background color="-13215616"/>
+          <borderPainted value="false"/>
+          <foreground color="-1"/>
           <text resource-bundle="words" key="add"/>
         </properties>
       </component>
@@ -31,7 +33,9 @@
           <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="7" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <background color="-1315861"/>
+          <background color="-13215616"/>
+          <borderPainted value="false"/>
+          <foreground color="-1"/>
           <text resource-bundle="words" key="save"/>
         </properties>
       </component>
@@ -40,7 +44,9 @@
           <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <background color="-1315861"/>
+          <background color="-13215616"/>
+          <borderPainted value="false"/>
+          <foreground color="-1"/>
           <text resource-bundle="words" key="delete"/>
         </properties>
       </component>
@@ -49,6 +55,8 @@
           <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <background color="-12696756"/>
+          <foreground color="-1"/>
           <text resource-bundle="words" key="name"/>
         </properties>
       </component>
@@ -57,6 +65,8 @@
           <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <background color="-12696756"/>
+          <foreground color="-1"/>
           <text resource-bundle="words" key="user"/>
         </properties>
       </component>
@@ -65,6 +75,8 @@
           <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <background color="-12696756"/>
+          <foreground color="-1"/>
           <text resource-bundle="words" key="url"/>
         </properties>
       </component>
@@ -74,7 +86,11 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <background color="-12500671"/>
+          <caretColor color="-1"/>
+          <foreground color="-1"/>
+        </properties>
       </component>
       <component id="cb8e0" class="javax.swing.JTextField" binding="userField">
         <constraints>
@@ -82,7 +98,11 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <background color="-12500671"/>
+          <caretColor color="-1"/>
+          <foreground color="-1"/>
+        </properties>
       </component>
       <component id="519fd" class="javax.swing.JTextField" binding="urlField">
         <constraints>
@@ -90,14 +110,20 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <background color="-12500671"/>
+          <caretColor color="-1"/>
+          <foreground color="-1"/>
+        </properties>
       </component>
       <component id="f13e8" class="javax.swing.JButton" binding="changeToThisDatabaseButton" default-binding="true">
         <constraints>
           <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <background color="-1315861"/>
+          <background color="-13215616"/>
+          <borderPainted value="false"/>
+          <foreground color="-1"/>
           <text resource-bundle="words" key="change.database"/>
         </properties>
       </component>
@@ -117,7 +143,7 @@
               <foreground color="-1"/>
               <minimumSize width="50" height="50"/>
               <preferredSize width="50" height="50"/>
-              <selectionBackground color="-9539213"/>
+              <selectionBackground color="-13215616"/>
               <selectionForeground color="-1"/>
               <valueIsAdjusting value="false"/>
             </properties>
@@ -140,7 +166,7 @@
               <foreground color="-1"/>
               <minimumSize width="50" height="50"/>
               <preferredSize width="50" height="50"/>
-              <selectionBackground color="-9539213"/>
+              <selectionBackground color="-13215616"/>
               <selectionForeground color="-1"/>
               <valueIsAdjusting value="false"/>
             </properties>
@@ -152,6 +178,8 @@
           <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <background color="-12696756"/>
+          <foreground color="-1"/>
           <text resource-bundle="words" key="password"/>
         </properties>
       </component>
@@ -161,14 +189,20 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <background color="-12500671"/>
+          <caretColor color="-1"/>
+          <foreground color="-1"/>
+        </properties>
       </component>
       <component id="1ef35" class="javax.swing.JButton" binding="savePasswordButton">
         <constraints>
           <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <background color="-1315861"/>
+          <background color="-13215616"/>
+          <borderPainted value="false"/>
+          <foreground color="-1"/>
           <text resource-bundle="words" key="save.password"/>
         </properties>
       </component>
@@ -177,6 +211,8 @@
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <background color="-12696756"/>
+          <foreground color="-1"/>
           <text value="Current connection"/>
         </properties>
       </component>
@@ -187,8 +223,12 @@
           </grid>
         </constraints>
         <properties>
+          <background color="-12696756"/>
+          <caretColor color="-1"/>
+          <disabledTextColor color="-1"/>
           <editable value="false"/>
           <enabled value="true"/>
+          <foreground color="-1"/>
         </properties>
         <clientProperties>
           <html.disable class="java.lang.Boolean" value="false"/>
