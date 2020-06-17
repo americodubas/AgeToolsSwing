@@ -9,6 +9,7 @@ import services.DatabaseServiceKt;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -33,7 +34,7 @@ class DatabaseForm {
     private JTextField passwordField;
     private JButton changeToThisDatabaseButton;
     private JButton savePasswordButton;
-    private JTextField currentConnectionField;
+    private JTextArea currentConnectionArea;
 
     private DefaultListModel databaseModel;
     private DefaultListModel passwordModel;
@@ -56,14 +57,14 @@ class DatabaseForm {
     }
 
     private void removeFieldBorder() {
-        nameField.setBorder(BorderFactory.createEmptyBorder());
-        passwordField.setBorder(BorderFactory.createEmptyBorder());
-        urlField.setBorder(BorderFactory.createEmptyBorder());
-        userField.setBorder(BorderFactory.createEmptyBorder());
+        nameField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+        passwordField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+        urlField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+        userField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
     }
 
     private void setCurrentConnectionField() {
-        currentConnectionField.setText(getCurrentConnection());
+        currentConnectionArea.setText(getCurrentConnection());
     }
 
     /**

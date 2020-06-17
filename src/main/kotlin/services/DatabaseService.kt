@@ -18,9 +18,9 @@ fun getCurrentConnection(): String {
     val allDatabases = getAllDatabases()
     var currentConnection = ""
     allConnectionFiles.forEach {
-        currentConnection += "[" + it.name + " : " + getDatabaseName(it, allDatabases) + "] "
+        currentConnection += "[" + it.name + " : " + getDatabaseName(it, allDatabases) + "]" + System.lineSeparator()
     }
-    return currentConnection
+    return currentConnection.substring(0, currentConnection.length - 2)
 }
 
 private fun getDatabaseName(connectionFile: ConnectionFile, allDatabases: List<Database>): String {
