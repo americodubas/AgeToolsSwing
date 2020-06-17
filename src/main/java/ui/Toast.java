@@ -66,7 +66,7 @@ class Toast extends JDialog {
         //create an opaque window.
         // Set the window to 50% translucency, if supported.
         if (isTranslucencySupported) {
-            setOpacity(0.5f);
+            setOpacity(0.8f);
         } else {
             System.out.println("Translucency is not supported.");
         }

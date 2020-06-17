@@ -7,6 +7,8 @@ import services.DatabasePasswordFileServiceKt;
 import services.DatabaseServiceKt;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
@@ -42,6 +44,9 @@ class DatabaseForm {
     private int connectionFileId;
     private final ResourceBundle words = ResourceBundle.getBundle("words");
 
+    private Database selectedDatabase;
+    private String currentPassword;
+
     DatabaseForm(JFrame frame) {
         this.frame = frame;
         setDatabaseList();
@@ -53,14 +58,22 @@ class DatabaseForm {
         setChangeButtonListener();
         setSavePasswordButtonListener();
         setCurrentConnectionField();
-        removeFieldBorder();
+        setFieldBottomBorder();
+        setFieldListener();
     }
 
-    private void removeFieldBorder() {
-        nameField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
-        passwordField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
-        urlField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
-        userField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+    private void setFieldBottomBorder() {
+        CustomBorder.setBottomWhiteBorder(nameField);
+        CustomBorder.setBottomWhiteBorder(passwordField);
+        CustomBorder.setBottomWhiteBorder(urlField);
+        CustomBorder.setBottomWhiteBorder(userField);
+    }
+
+    private void setFieldListener() {
+        EnableButton.onTextChange(nameField, selectedDatabase.getName(), saveButton);
+        EnableButton.onTextChange(urlField, selectedDatabase.getUrl(), saveButton);
+        EnableButton.onTextChange(userField, selectedDatabase.getUser(), saveButton);
+        EnableButton.onTextChange(passwordField, currentPassword, savePasswordButton);
     }
 
     private void setCurrentConnectionField() {
@@ -93,6 +106,8 @@ class DatabaseForm {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DatabasePasswordFileServiceKt.updatePassword(databaseId, connectionFileId, passwordField.getText());
+                currentPassword = passwordField.getText();
+                savePasswordButton.setEnabled(false);
             }
         });
     }
@@ -149,6 +164,8 @@ class DatabaseForm {
                     database.setUrl(urlField.getText());
                     DatabaseServiceKt.updateDatabase(database);
                     databaseModel.set(databaseList.getSelectedIndex(), nameField.getText());
+                    selectedDatabase = database;
+                    saveButton.setEnabled(false);
                 } else {
                     Toast.makeText(frame,words.getString("error.database"));
                 }
@@ -218,6 +235,8 @@ class DatabaseForm {
                 if (connectionFile != null) {
                     connectionFileId = connectionFile.getId();
                     passwordField.setText( DatabasePasswordFileServiceKt.getPassword(databaseId, connectionFileId).getPassword() );
+                    currentPassword = passwordField.getText();
+                    savePasswordButton.setEnabled(false);
                 } else {
                     Toast.makeText(frame, words.getString("error.database"));
                 }
@@ -253,6 +272,10 @@ class DatabaseForm {
                     urlField.setText(database.getUrl());
                     databaseId = database.getId();
                     passwordField.setText( DatabasePasswordFileServiceKt.getPassword(databaseId, connectionFileId).getPassword() );
+                    currentPassword = passwordField.getText();
+                    selectedDatabase = database;
+                    saveButton.setEnabled(false);
+                    savePasswordButton.setEnabled(false);
                 } else {
                     Toast.makeText(frame, words.getString("error.database"));
                 }

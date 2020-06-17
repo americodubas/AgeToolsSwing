@@ -139,6 +139,7 @@
                 <properties>
                   <background color="-13215616"/>
                   <borderPainted value="false"/>
+                  <enabled value="false"/>
                   <foreground color="-1"/>
                   <icon value="images/save.png"/>
                   <text resource-bundle="words" key="save"/>
@@ -185,6 +186,7 @@
                 <properties>
                   <background color="-13215616"/>
                   <borderPainted value="false"/>
+                  <enabled value="false"/>
                   <foreground color="-1"/>
                   <icon value="images/save.png"/>
                   <text resource-bundle="words" key="save.password"/>
