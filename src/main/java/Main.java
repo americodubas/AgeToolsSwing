@@ -22,6 +22,8 @@ public class Main {
         frame.add(new MainTabbedPane(frame), BorderLayout.CENTER);
         frame.getContentPane().setBackground(CustomColor.DARK);
         frame.pack();
+        frame.dispose();
+        frame.setUndecorated(true);
         frame.setVisible(true);
     }
 

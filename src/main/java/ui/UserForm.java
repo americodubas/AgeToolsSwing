@@ -4,11 +4,7 @@ import model.User;
 import services.UserServiceKt;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -17,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+@SuppressWarnings("unchecked")
 public class UserForm {
     private final JFrame frame;
 
@@ -38,6 +35,8 @@ public class UserForm {
     private int id;
     private final ResourceBundle words = ResourceBundle.getBundle("words");
 
+    private User selectedUser;
+
     UserForm(JFrame frame) {
         this.frame = frame;
         setUserList();
@@ -49,49 +48,46 @@ public class UserForm {
         setHSocButtonListener();
         setPSocButtonListener();
         setBSocButtonListener();
-        removeFieldBorder();
+        setFieldBottomBorder();
+        setFieldListener();
     }
 
-    private void removeFieldBorder() {
-        nameField.setBorder(BorderFactory.createEmptyBorder());
-        passwordField.setBorder(BorderFactory.createEmptyBorder());
-        codeField.setBorder(BorderFactory.createEmptyBorder());
+    private void setFieldBottomBorder() {
+        CustomBorder.setBottomWhiteBorder(nameField);
+        CustomBorder.setBottomWhiteBorder(passwordField);
+        CustomBorder.setBottomWhiteBorder(codeField);
+    }
+
+    private void setFieldListener() {
+        EnableButton.onTextChange(nameField, selectedUser.getName(), saveButton);
+        EnableButton.onTextChange(passwordField, selectedUser.getPassword(), saveButton);
+        EnableButton.onTextChange(codeField, selectedUser.getCode(), saveButton);
+
+        descriptionArea.getDocument().addDocumentListener((CustomDocumentListener) () -> {
+            if (!descriptionArea.getText().equals(selectedUser.getDescription())) {
+                saveButton.setEnabled(true);
+            }
+        });
     }
 
     private void setHSocButtonListener() {
         hsocButton.setMnemonic(KeyEvent.VK_H);
-        hsocButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                opeUrl("http://www.h-soc.com.br");
-            }
-        });
+        hsocButton.addActionListener(e -> opeUrl("http://www.h-soc.com.br"));
     }
 
     private void setPSocButtonListener() {
         psocButton.setMnemonic(KeyEvent.VK_P);
-        psocButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                opeUrl("http://www.p-soc.com.br");
-            }
-        });
+        psocButton.addActionListener(e -> opeUrl("http://www.p-soc.com.br"));
     }
 
     private void setBSocButtonListener() {
         bsocButton.setMnemonic(KeyEvent.VK_B);
-        bsocButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                opeUrl("http://www.b-soc.com.br");
-            }
-        });
+        bsocButton.addActionListener(e -> opeUrl("http://www.b-soc.com.br"));
     }
 
     private void setLocalButtonListener() {
         localButton.setMnemonic(KeyEvent.VK_L);
-        localButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                opeUrl("http://localhost:8080");
-            }
-        });
+        localButton.addActionListener(e -> opeUrl("http://localhost:8080"));
     }
 
     /**
@@ -125,16 +121,14 @@ public class UserForm {
      */
     private void setDeleteButtonListener() {
         deleteButton.setMnemonic(KeyEvent.VK_D);
-        deleteButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (canDelete()) {
-                    UserServiceKt.deleteUserBy(id);
-                    userModel.remove(userList.getSelectedIndex());
-                    checkDisableDeleteButton();
-                    selectFirstUser();
-                } else {
-                    Toast.makeText(frame, words.getString("can.not.delete.connection.file"));
-                }
+        deleteButton.addActionListener(e -> {
+            if (canDelete()) {
+                UserServiceKt.deleteUserBy(id);
+                userModel.remove(userList.getSelectedIndex());
+                checkDisableDeleteButton();
+                selectFirstUser();
+            } else {
+                Toast.makeText(frame, words.getString("can.not.delete.connection.file"));
             }
         });
     }
@@ -154,26 +148,26 @@ public class UserForm {
      */
     private void setSaveButtonListener() {
         saveButton.setMnemonic(KeyEvent.VK_S);
-        saveButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (isMissingRequiredFields()){
-                    return;
-                }
-                if (UserServiceKt.isUserNameAlreadyUsed(nameField.getText(), id)) {
-                    Toast.makeText(frame,words.getString("name.used"));
-                    return;
-                }
-                User user = UserServiceKt.getUserBy(id);
-                if (user != null) {
-                    user.setName(nameField.getText());
-                    user.setPassword(passwordField.getText());
-                    user.setCode(codeField.getText());
-                    user.setDescription(descriptionArea.getText());
-                    UserServiceKt.updateUser(user);
-                    userModel.set(userList.getSelectedIndex(), nameField.getText());
-                } else {
-                    Toast.makeText(frame,words.getString("error.connection.file"));
-                }
+        saveButton.addActionListener(e -> {
+            if (isMissingRequiredFields()){
+                return;
+            }
+            if (UserServiceKt.isUserNameAlreadyUsed(nameField.getText(), id)) {
+                Toast.makeText(frame,words.getString("name.used"));
+                return;
+            }
+            User user = UserServiceKt.getUserBy(id);
+            if (user != null) {
+                user.setName(nameField.getText());
+                user.setPassword(passwordField.getText());
+                user.setCode(codeField.getText());
+                user.setDescription(descriptionArea.getText());
+                UserServiceKt.updateUser(user);
+                userModel.set(userList.getSelectedIndex(), nameField.getText());
+                selectedUser = user;
+                saveButton.setEnabled(false);
+            } else {
+                Toast.makeText(frame,words.getString("error.connection.file"));
             }
         });
     }
@@ -206,11 +200,9 @@ public class UserForm {
      */
     private void setAddButtonListener() {
         addButton.setMnemonic(KeyEvent.VK_A);
-        addButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                userModel.addElement(UserServiceKt.createUser().getName());
-                checkDisableDeleteButton();
-            }
+        addButton.addActionListener(e -> {
+            userModel.addElement(UserServiceKt.createUser().getName());
+            checkDisableDeleteButton();
         });
     }
 
@@ -239,21 +231,22 @@ public class UserForm {
      * When a connection file is selected, fill the fields with it's data
      */
     private void setUserSelectionListener() {
-        userList.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                if (userList.getSelectedIndex() < 0) {
-                    return;
-                }
-                User user = UserServiceKt.getUserBy((String) userModel.get(userList.getSelectedIndex()));
-                if (user != null) {
-                    nameField.setText(user.getName());
-                    passwordField.setText(user.getPassword());
-                    codeField.setText(user.getCode());
-                    descriptionArea.setText(user.getDescription());
-                    id = user.getId();
-                } else {
-                    Toast.makeText(frame, words.getString("error.connection.file"));
-                }
+        userList.addListSelectionListener(e -> {
+            if (userList.getSelectedIndex() < 0) {
+                return;
+            }
+            User user = UserServiceKt.getUserBy((String) userModel.get(userList.getSelectedIndex()));
+            if (user != null) {
+                nameField.setText(user.getName());
+                passwordField.setText(user.getPassword());
+                codeField.setText(user.getCode());
+                System.out.println("desc " + user.getDescription());
+                descriptionArea.setText(user.getDescription());
+                id = user.getId();
+                selectedUser = user;
+                saveButton.setEnabled(false);
+            } else {
+                Toast.makeText(frame, words.getString("error.connection.file"));
             }
         });
     }
