@@ -4,14 +4,11 @@ import model.ConnectionFile;
 import services.ConnectionFileServiceKt;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+@SuppressWarnings("unchecked")
 class ConnectionFileForm {
     private final JFrame frame;
 
@@ -66,16 +63,14 @@ class ConnectionFileForm {
      */
     private void setDeleteButtonListener() {
         deleteButton.setMnemonic(KeyEvent.VK_D);
-        deleteButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (canDelete()) {
-                    ConnectionFileServiceKt.deleteConnectionFileBy(id);
-                    connectionFileModel.remove(connectionFileList.getSelectedIndex());
-                    checkDisableDeleteButton();
-                    selectFirstConnectionFile();
-                } else {
-                    Toast.makeText(frame, words.getString("can.not.delete.connection.file"));
-                }
+        deleteButton.addActionListener(e -> {
+            if (canDelete()) {
+                ConnectionFileServiceKt.deleteConnectionFileBy(id);
+                connectionFileModel.remove(connectionFileList.getSelectedIndex());
+                checkDisableDeleteButton();
+                selectFirstConnectionFile();
+            } else {
+                Toast.makeText(frame, words.getString("can.not.delete.connection.file"));
             }
         });
     }
@@ -95,29 +90,27 @@ class ConnectionFileForm {
      */
     private void setSaveButtonListener() {
         saveButton.setMnemonic(KeyEvent.VK_S);
-        saveButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (isMissingRequiredFields()){
-                    return;
-                }
-                if (ConnectionFileServiceKt.isConnectionFileNameAlreadyUsed(nameField.getText(), id)) {
-                    Toast.makeText(frame,words.getString("name.used"));
-                    return;
-                }
-                ConnectionFile connectionFile = ConnectionFileServiceKt.getConnectionFileBy(id);
-                if (connectionFile != null) {
-                    connectionFile.setName(nameField.getText());
-                    connectionFile.setFilepath(filepathField.getText());
-                    connectionFile.setUserTag(userTagField.getText());
-                    connectionFile.setUrlTag(urlTagField.getText());
-                    connectionFile.setPasswordTag(passwordTagField.getText());
-                    ConnectionFileServiceKt.updateConnectionFile(connectionFile);
-                    connectionFileModel.set(connectionFileList.getSelectedIndex(), nameField.getText());
-                    selectedConnectionFile = connectionFile;
-                    saveButton.setEnabled(false);
-                } else {
-                    Toast.makeText(frame,words.getString("error.connection.file"));
-                }
+        saveButton.addActionListener(e -> {
+            if (isMissingRequiredFields()){
+                return;
+            }
+            if (ConnectionFileServiceKt.isConnectionFileNameAlreadyUsed(nameField.getText(), id)) {
+                Toast.makeText(frame,words.getString("name.used"));
+                return;
+            }
+            ConnectionFile connectionFile = ConnectionFileServiceKt.getConnectionFileBy(id);
+            if (connectionFile != null) {
+                connectionFile.setName(nameField.getText());
+                connectionFile.setFilepath(filepathField.getText());
+                connectionFile.setUserTag(userTagField.getText());
+                connectionFile.setUrlTag(urlTagField.getText());
+                connectionFile.setPasswordTag(passwordTagField.getText());
+                ConnectionFileServiceKt.updateConnectionFile(connectionFile);
+                connectionFileModel.set(connectionFileList.getSelectedIndex(), nameField.getText());
+                selectedConnectionFile = connectionFile;
+                saveButton.setEnabled(false);
+            } else {
+                Toast.makeText(frame,words.getString("error.connection.file"));
             }
         });
     }
@@ -129,11 +122,9 @@ class ConnectionFileForm {
      */
     private void setAddButtonListener() {
         addButton.setMnemonic(KeyEvent.VK_A);
-        addButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                connectionFileModel.addElement(ConnectionFileServiceKt.createConnectionFile().getName());
-                checkDisableDeleteButton();
-            }
+        addButton.addActionListener(e -> {
+            connectionFileModel.addElement(ConnectionFileServiceKt.createConnectionFile().getName());
+            checkDisableDeleteButton();
         });
     }
 
@@ -162,24 +153,22 @@ class ConnectionFileForm {
      * When a connection file is selected, fill the fields with it's data
      */
     private void setConnectionFileSelectionListener() {
-        connectionFileList.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                if (connectionFileList.getSelectedIndex() < 0) {
-                    return;
-                }
-                ConnectionFile connectionFile = ConnectionFileServiceKt.getConnectionFileBy((String) connectionFileModel.get(connectionFileList.getSelectedIndex()));
-                if (connectionFile != null) {
-                    nameField.setText(connectionFile.getName());
-                    filepathField.setText(connectionFile.getFilepath());
-                    userTagField.setText(connectionFile.getUserTag());
-                    urlTagField.setText(connectionFile.getUrlTag());
-                    passwordTagField.setText(connectionFile.getPasswordTag());
-                    id = connectionFile.getId();
-                    selectedConnectionFile = connectionFile;
-                    saveButton.setEnabled(false);
-                } else {
-                    Toast.makeText(frame, words.getString("error.connection.file"));
-                }
+        connectionFileList.addListSelectionListener(e -> {
+            if (connectionFileList.getSelectedIndex() < 0) {
+                return;
+            }
+            ConnectionFile connectionFile = ConnectionFileServiceKt.getConnectionFileBy((String) connectionFileModel.get(connectionFileList.getSelectedIndex()));
+            if (connectionFile != null) {
+                nameField.setText(connectionFile.getName());
+                filepathField.setText(connectionFile.getFilepath());
+                userTagField.setText(connectionFile.getUserTag());
+                urlTagField.setText(connectionFile.getUrlTag());
+                passwordTagField.setText(connectionFile.getPasswordTag());
+                id = connectionFile.getId();
+                selectedConnectionFile = connectionFile;
+                saveButton.setEnabled(false);
+            } else {
+                Toast.makeText(frame, words.getString("error.connection.file"));
             }
         });
     }

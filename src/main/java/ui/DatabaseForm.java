@@ -7,13 +7,6 @@ import services.DatabasePasswordFileServiceKt;
 import services.DatabaseServiceKt;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -86,14 +79,11 @@ class DatabaseForm {
      */
     private void setChangeButtonListener() {
         changeToThisDatabaseButton.setMnemonic(KeyEvent.VK_C);
-        changeToThisDatabaseButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                changeConnectionTo(databaseId);
-                Toast.makeText(frame, words.getString("connection.changed"));
-                setCurrentConnectionField();
-            }
-        });
+        changeToThisDatabaseButton.addActionListener((e -> {
+            changeConnectionTo(databaseId);
+            Toast.makeText(frame, words.getString("connection.changed"));
+            setCurrentConnectionField();
+        }));
     }
 
     /**
@@ -102,13 +92,10 @@ class DatabaseForm {
      */
     private void setSavePasswordButtonListener() {
         savePasswordButton.setMnemonic(KeyEvent.VK_P);
-        savePasswordButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DatabasePasswordFileServiceKt.updatePassword(databaseId, connectionFileId, passwordField.getText());
-                currentPassword = passwordField.getText();
-                savePasswordButton.setEnabled(false);
-            }
+        savePasswordButton.addActionListener(e -> {
+            DatabasePasswordFileServiceKt.updatePassword(databaseId, connectionFileId, passwordField.getText());
+            currentPassword = passwordField.getText();
+            savePasswordButton.setEnabled(false);
         });
     }
 
@@ -119,16 +106,14 @@ class DatabaseForm {
      */
     private void setDeleteButtonListener() {
         deleteButton.setMnemonic(KeyEvent.VK_D);
-        deleteButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (canDelete()) {
-                    DatabaseServiceKt.deleteDatabaseBy(databaseId);
-                    databaseModel.remove(databaseList.getSelectedIndex());
-                    checkDisableDeleteButton();
-                    selectFirstDatabase();
-                } else {
-                    Toast.makeText(frame, words.getString("can.not.delete.database"));
-                }
+        deleteButton.addActionListener(e -> {
+            if (canDelete()) {
+                DatabaseServiceKt.deleteDatabaseBy(databaseId);
+                databaseModel.remove(databaseList.getSelectedIndex());
+                checkDisableDeleteButton();
+                selectFirstDatabase();
+            } else {
+                Toast.makeText(frame, words.getString("can.not.delete.database"));
             }
         });
     }
@@ -148,27 +133,25 @@ class DatabaseForm {
      */
     private void setSaveButtonListener() {
         saveButton.setMnemonic(KeyEvent.VK_S);
-        saveButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (isMissingRequiredFields()){
-                    return;
-                }
-                if (isDatabaseNameAlreadyUsed(nameField.getText(), databaseId)) {
-                    Toast.makeText(frame,words.getString("name.used"));
-                    return;
-                }
-                Database database = DatabaseServiceKt.getDatabaseBy(databaseId);
-                if (database != null) {
-                    database.setName(nameField.getText());
-                    database.setUser(userField.getText());
-                    database.setUrl(urlField.getText());
-                    DatabaseServiceKt.updateDatabase(database);
-                    databaseModel.set(databaseList.getSelectedIndex(), nameField.getText());
-                    selectedDatabase = database;
-                    saveButton.setEnabled(false);
-                } else {
-                    Toast.makeText(frame,words.getString("error.database"));
-                }
+        saveButton.addActionListener(e -> {
+            if (isMissingRequiredFields()){
+                return;
+            }
+            if (isDatabaseNameAlreadyUsed(nameField.getText(), databaseId)) {
+                Toast.makeText(frame,words.getString("name.used"));
+                return;
+            }
+            Database database = DatabaseServiceKt.getDatabaseBy(databaseId);
+            if (database != null) {
+                database.setName(nameField.getText());
+                database.setUser(userField.getText());
+                database.setUrl(urlField.getText());
+                DatabaseServiceKt.updateDatabase(database);
+                databaseModel.set(databaseList.getSelectedIndex(), nameField.getText());
+                selectedDatabase = database;
+                saveButton.setEnabled(false);
+            } else {
+                Toast.makeText(frame,words.getString("error.database"));
             }
         });
     }
@@ -180,11 +163,9 @@ class DatabaseForm {
      */
     private void setAddButtonListener() {
         addButton.setMnemonic(KeyEvent.VK_A);
-        addButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                databaseModel.addElement(DatabaseServiceKt.createDatabase().getName());
-                checkDisableDeleteButton();
-            }
+        addButton.addActionListener(e -> {
+            databaseModel.addElement(DatabaseServiceKt.createDatabase().getName());
+            checkDisableDeleteButton();
         });
     }
 
@@ -225,21 +206,18 @@ class DatabaseForm {
      * When a file from passwordList is selected, find the connection file and the database and show the stored password
      */
     private void setPasswordSelectionListener() {
-        passwordList.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (passwordList.getSelectedIndex() < 0) {
-                    return;
-                }
-                ConnectionFile connectionFile = ConnectionFileServiceKt.getConnectionFileBy((String) passwordModel.get(passwordList.getSelectedIndex()));
-                if (connectionFile != null) {
-                    connectionFileId = connectionFile.getId();
-                    passwordField.setText( DatabasePasswordFileServiceKt.getPassword(databaseId, connectionFileId).getPassword() );
-                    currentPassword = passwordField.getText();
-                    savePasswordButton.setEnabled(false);
-                } else {
-                    Toast.makeText(frame, words.getString("error.database"));
-                }
+        passwordList.addListSelectionListener(e -> {
+            if (passwordList.getSelectedIndex() < 0) {
+                return;
+            }
+            ConnectionFile connectionFile = ConnectionFileServiceKt.getConnectionFileBy((String) passwordModel.get(passwordList.getSelectedIndex()));
+            if (connectionFile != null) {
+                connectionFileId = connectionFile.getId();
+                passwordField.setText( DatabasePasswordFileServiceKt.getPassword(databaseId, connectionFileId).getPassword() );
+                currentPassword = passwordField.getText();
+                savePasswordButton.setEnabled(false);
+            } else {
+                Toast.makeText(frame, words.getString("error.database"));
             }
         });
     }
@@ -260,25 +238,23 @@ class DatabaseForm {
      * When a database is selected, fill the fields with it's data
      */
     private void setDatabaseSelectionListener() {
-        databaseList.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                if (databaseList.getSelectedIndex() < 0) {
-                    return;
-                }
-                Database database = DatabaseServiceKt.getDatabaseBy((String) databaseModel.get(databaseList.getSelectedIndex()));
-                if (database != null) {
-                    nameField.setText(database.getName());
-                    userField.setText(database.getUser());
-                    urlField.setText(database.getUrl());
-                    databaseId = database.getId();
-                    passwordField.setText( DatabasePasswordFileServiceKt.getPassword(databaseId, connectionFileId).getPassword() );
-                    currentPassword = passwordField.getText();
-                    selectedDatabase = database;
-                    saveButton.setEnabled(false);
-                    savePasswordButton.setEnabled(false);
-                } else {
-                    Toast.makeText(frame, words.getString("error.database"));
-                }
+        databaseList.addListSelectionListener(e -> {
+            if (databaseList.getSelectedIndex() < 0) {
+                return;
+            }
+            Database database = DatabaseServiceKt.getDatabaseBy((String) databaseModel.get(databaseList.getSelectedIndex()));
+            if (database != null) {
+                nameField.setText(database.getName());
+                userField.setText(database.getUser());
+                urlField.setText(database.getUrl());
+                databaseId = database.getId();
+                passwordField.setText( DatabasePasswordFileServiceKt.getPassword(databaseId, connectionFileId).getPassword() );
+                currentPassword = passwordField.getText();
+                selectedDatabase = database;
+                saveButton.setEnabled(false);
+                savePasswordButton.setEnabled(false);
+            } else {
+                Toast.makeText(frame, words.getString("error.database"));
             }
         });
     }
