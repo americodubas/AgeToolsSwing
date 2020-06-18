@@ -30,6 +30,8 @@ class ConnectionFileForm {
     private int id;
     private final ResourceBundle words = ResourceBundle.getBundle("words");
 
+    private ConnectionFile selectedConnectionFile;
+
     ConnectionFileForm(JFrame frame) {
         this.frame = frame;
         setConnectionFileList();
@@ -37,14 +39,24 @@ class ConnectionFileForm {
         setAddButtonListener();
         setSaveButtonListener();
         setDeleteButtonListener();
-        removeFieldBorder();
+        setFieldBottomBorder();
+        setFieldListener();
     }
 
-    private void removeFieldBorder() {
-        nameField.setBorder(BorderFactory.createEmptyBorder());
-        filepathField.setBorder(BorderFactory.createEmptyBorder());
-        userTagField.setBorder(BorderFactory.createEmptyBorder());
-        urlTagField.setBorder(BorderFactory.createEmptyBorder());
+    private void setFieldBottomBorder() {
+        CustomBorder.setBottomWhiteBorder(nameField);
+        CustomBorder.setBottomWhiteBorder(filepathField);
+        CustomBorder.setBottomWhiteBorder(userTagField);
+        CustomBorder.setBottomWhiteBorder(urlTagField);
+        CustomBorder.setBottomWhiteBorder(passwordTagField);
+    }
+
+    private void setFieldListener() {
+        EnableButton.onTextChange(nameField, selectedConnectionFile.getName(), saveButton);
+        EnableButton.onTextChange(filepathField, selectedConnectionFile.getFilepath(), saveButton);
+        EnableButton.onTextChange(userTagField, selectedConnectionFile.getUserTag(), saveButton);
+        EnableButton.onTextChange(urlTagField, selectedConnectionFile.getUrlTag(), saveButton);
+        EnableButton.onTextChange(passwordTagField, selectedConnectionFile.getPasswordTag(), saveButton);
     }
 
     /**
@@ -101,6 +113,8 @@ class ConnectionFileForm {
                     connectionFile.setPasswordTag(passwordTagField.getText());
                     ConnectionFileServiceKt.updateConnectionFile(connectionFile);
                     connectionFileModel.set(connectionFileList.getSelectedIndex(), nameField.getText());
+                    selectedConnectionFile = connectionFile;
+                    saveButton.setEnabled(false);
                 } else {
                     Toast.makeText(frame,words.getString("error.connection.file"));
                 }
@@ -161,6 +175,8 @@ class ConnectionFileForm {
                     urlTagField.setText(connectionFile.getUrlTag());
                     passwordTagField.setText(connectionFile.getPasswordTag());
                     id = connectionFile.getId();
+                    selectedConnectionFile = connectionFile;
+                    saveButton.setEnabled(false);
                 } else {
                     Toast.makeText(frame, words.getString("error.connection.file"));
                 }

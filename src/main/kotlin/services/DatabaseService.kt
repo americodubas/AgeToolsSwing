@@ -24,9 +24,13 @@ fun getCurrentConnection(): String {
 }
 
 private fun getDatabaseName(connectionFile: ConnectionFile, allDatabases: List<Database>): String {
-    val document = getDocument(connectionFile.filepath)
-    val database = allDatabases.find { getTag(connectionFile.userTag, document) == it.user &&  getTag(connectionFile.urlTag, document) == it.url}
-    return database?.name ?: "NF"
+    return try {
+        val document = getDocument(connectionFile.filepath)
+        val database = allDatabases.find { getTag(connectionFile.userTag, document) == it.user && getTag(connectionFile.urlTag, document) == it.url }
+        database?.name ?: "NF"
+    } catch (e: Exception) {
+        "NF"
+    }
 }
 
 /**
