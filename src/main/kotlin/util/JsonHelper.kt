@@ -3,9 +3,7 @@ package util
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import java.io.BufferedReader
-import java.io.File
-import java.io.PrintWriter
+import java.io.*
 
 val builder: Gson = GsonBuilder().setPrettyPrinting().create()
 const val path = "C:\\jdsv\\"
@@ -14,7 +12,13 @@ const val path = "C:\\jdsv\\"
  * Writes a json file from the object T
  */
 fun <T> writeJsonFile(t: T, fileName: String) {
-    PrintWriter(path + fileName).append(builder.toJson(t)).close()
+    PrintWriter(
+            OutputStreamWriter(
+                    FileOutputStream(path + fileName)
+                    , "UTF-8")
+    )
+    .append(builder.toJson(t))
+    .close()
 }
 
 /**

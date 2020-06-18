@@ -240,7 +240,6 @@ public class UserForm {
                 nameField.setText(user.getName());
                 passwordField.setText(user.getPassword());
                 codeField.setText(user.getCode());
-                System.out.println("desc " + user.getDescription());
                 descriptionArea.setText(user.getDescription());
                 id = user.getId();
                 selectedUser = user;
