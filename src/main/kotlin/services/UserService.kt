@@ -38,9 +38,9 @@ private fun createNewFile() {
 }
 
 /**
- * Returns a [User] by its name
+ * Returns a [User] by its name and id
  */
-fun getUserBy(name: String) = getAllUsers().find { it.name == name }
+fun getUserBy(nameId: String) = getAllUsers().find { it.getNameId() == nameId }
 
 /**
  * Returns a [User] by its id
@@ -54,7 +54,7 @@ fun getAllUsersNames(): ArrayList<String> {
     val allUsers = getAllUsers()
     val names = ArrayList<String>(allUsers.size)
     allUsers.forEach {
-        names.add(it.name)
+        names.add(it.getNameId())
     }
     return names
 }

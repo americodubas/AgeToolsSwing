@@ -29,7 +29,7 @@ public class MainTabbedPane extends JTabbedPane implements ChangeListener {
         this.addChangeListener(this);
         this.setBackground(CustomColor.DARK_GREY);
         this.setForeground(Color.WHITE);
-        this.setFont(new Font("Arial", Font.BOLD, 16));
+        this.setFont(new Font("Arial", Font.BOLD, 20));
     }
 
     @Override

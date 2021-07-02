@@ -3,14 +3,14 @@
   <grid id="27dc6" binding="databasePanel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
-      <xy x="20" y="20" width="860" height="400"/>
+      <xy x="20" y="20" width="1280" height="600"/>
     </constraints>
     <properties>
       <background color="-12696756"/>
       <foreground color="-12500671"/>
       <inheritsPopupMenu value="false"/>
-      <minimumSize width="860" height="400"/>
-      <preferredSize width="860" height="400"/>
+      <minimumSize width="1280" height="600"/>
+      <preferredSize width="1280" height="600"/>
     </properties>
     <border type="bevel-raised" title-resource-bundle="words" title-key="database">
       <font name="Verdana" size="16" style="1"/>

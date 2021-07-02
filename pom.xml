@@ -6,10 +6,10 @@
 
     <groupId>com.agetools.swing</groupId>
     <artifactId>AgeTools</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>6.0</version>
 
     <properties>
-        <kotlin.version>1.2.30</kotlin.version>
+        <kotlin.version>1.5.10</kotlin.version>
     </properties>
 
     <dependencies>

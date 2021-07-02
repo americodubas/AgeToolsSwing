@@ -22,9 +22,9 @@ fun generateName(usedNames: List<Nameable>): String {
  * Returns a unique id checking the list of used ids
  */
 fun generateId(usedIds: List<Identifiable>): Int {
-    val maxId = usedIds.maxBy { it.getNewId() }
+    val maxId = usedIds.maxByOrNull { it.getNewId() }
     return when (maxId == null) {
         true -> 1
-        false -> maxId!!.getNewId() + 1
+        false -> maxId.getNewId() + 1
     }
 }

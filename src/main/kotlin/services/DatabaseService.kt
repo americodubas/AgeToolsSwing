@@ -66,7 +66,13 @@ private fun saveDocument(document: Document, filepath: String) {
  * Search for the [tagName] in the [document] and change its value to [tagValue]
  */
 private fun setTag(tagName: String, tagValue: String, document: Document) {
-    document.getElementsByTagName(tagName).item(0).textContent = tagValue
+    //document.getElementsByTagName(tagName).item(0).textContent = tagValue
+    val length = document.getElementsByTagName(tagName).length
+    var i= 0
+    while (i < length) {
+        document.getElementsByTagName(tagName).item(i).textContent = tagValue
+        i++
+    }
 }
 
 /**

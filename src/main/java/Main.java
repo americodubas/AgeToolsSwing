@@ -3,6 +3,7 @@ import ui.MainTabbedPane;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 
 public class Main {
 
@@ -14,6 +15,17 @@ public class Main {
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
             UIManager.put("TabbedPane.selected", CustomColor.DARK_BLUE);
+
+            for (Map.Entry<Object, Object> entry : javax.swing.UIManager.getDefaults().entrySet()) {
+                Object key = entry.getKey();
+                Object value = javax.swing.UIManager.get(key);
+                if (value instanceof javax.swing.plaf.FontUIResource) {
+                    javax.swing.plaf.FontUIResource fr=(javax.swing.plaf.FontUIResource)value;
+                    javax.swing.plaf.FontUIResource f = new javax.swing.plaf.FontUIResource(fr.getFamily(), fr.getStyle(), 16);
+                    javax.swing.UIManager.put(key, f);
+                }
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -23,7 +35,6 @@ public class Main {
         frame.getContentPane().setBackground(CustomColor.DARK);
         frame.pack();
         frame.dispose();
-        frame.setUndecorated(true);
         frame.setVisible(true);
     }
 

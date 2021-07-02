@@ -16,4 +16,6 @@ data class User(
 
     override fun getNewId() = id
 
+    fun getNameId() = "$id-$name"
+
 }

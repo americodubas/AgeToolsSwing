@@ -72,12 +72,12 @@ public class UserForm {
 
     private void setHSocButtonListener() {
         hsocButton.setMnemonic(KeyEvent.VK_H);
-        hsocButton.addActionListener(e -> opeUrl("http://www.h-soc.com.br"));
+        hsocButton.addActionListener(e -> opeUrl("https://sistema.h-soc.com.br"));
     }
 
     private void setPSocButtonListener() {
         psocButton.setMnemonic(KeyEvent.VK_P);
-        psocButton.addActionListener(e -> opeUrl("http://www.p-soc.com.br"));
+        psocButton.addActionListener(e -> opeUrl("https://www.p-soc.com.br"));
     }
 
     private void setBSocButtonListener() {
@@ -152,10 +152,12 @@ public class UserForm {
             if (isMissingRequiredFields()){
                 return;
             }
+            /*
             if (UserServiceKt.isUserNameAlreadyUsed(nameField.getText(), id)) {
                 Toast.makeText(frame,words.getString("name.used"));
                 return;
             }
+            */
             User user = UserServiceKt.getUserBy(id);
             if (user != null) {
                 user.setName(nameField.getText());
@@ -163,7 +165,7 @@ public class UserForm {
                 user.setCode(codeField.getText());
                 user.setDescription(descriptionArea.getText());
                 UserServiceKt.updateUser(user);
-                userModel.set(userList.getSelectedIndex(), nameField.getText());
+                userModel.set(userList.getSelectedIndex(), user.getNameId());
                 selectedUser = user;
                 saveButton.setEnabled(false);
             } else {
@@ -201,7 +203,7 @@ public class UserForm {
     private void setAddButtonListener() {
         addButton.setMnemonic(KeyEvent.VK_A);
         addButton.addActionListener(e -> {
-            userModel.addElement(UserServiceKt.createUser().getName());
+            userModel.addElement(UserServiceKt.createUser().getNameId());
             checkDisableDeleteButton();
         });
     }
